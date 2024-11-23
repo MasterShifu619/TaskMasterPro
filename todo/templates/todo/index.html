@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-curved/css/uicons-solid-curved.css'>
+    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
     <style>
+        
         * {
             margin: 0;
             padding: 0;
@@ -750,8 +753,9 @@
                     <li style="background-color:{{list_item.tag_color}};" class="listItem {% if list_item.is_done %}done{% endif %}">
                         <input type="checkbox" id="{{ "ListItem_"|addstr:list_item.id }}" name="{{ "ListItem_"|addstr:list_item.id }}" value="{{ "ListItem_"|addstr:list_item.id }}" {% if list_item.is_done %}checked{% endif %}>
                         <label for="{{ "ListItem_"|addstr:list_item.id }}">{{ list_item.item_name }}</label>
-                        <span class="clone">y</span>
+                        <span class="clone"><i class="fi fi-rs-clone"></i></span>
                         <span class="close">x</span>
+                        
                         <br>
                         <label class="text-right">Start date: {{ list_item.created_on }}</label>
                         <label style="color:{{list_item.color}};">Due: {{list_item.due_date}}</label>
