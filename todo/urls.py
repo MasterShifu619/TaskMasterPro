@@ -16,6 +16,7 @@ urlpatterns = [
     path('templates/new-from-todo', views.template_from_todo, name='template_from_todo'),
     path('updateListItem', views.updateListItem, name='updateListItem'),
     path('removeListItem', views.removeListItem, name='removeListItem'),
+    path('cloneListItem', views.cloneListItem, name='cloneListItem'),
     path('createNewTodoList', views.createNewTodoList, name='createNewTodoList'),
     path('getListItemByName', views.getListItemByName, name='getListItemByName'),
     path('getListItemById', views.getListItemById, name='getListItemById'),

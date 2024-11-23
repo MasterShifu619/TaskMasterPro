@@ -190,6 +190,27 @@ def removeListItem(request):
     else:
         return redirect("/todo")
 
+# Clone a to-do list item, called by javascript function
+@csrf_exempt
+def cloneListItem(request):
+    if not request.user.is_authenticated:
+        return redirect("/login")
+    if request.method == 'POST':
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        list_item_id = body['list_item_id']
+        print("list_item_id: ", list_item_id)
+        try:
+            with transaction.atomic():
+                being_removed_item = ListItem.objects.get(id=list_item_id)
+                being_removed_item.delete()
+        except IntegrityError as e:
+            print(str(e))
+            print("unknown error occurs when trying to update todo list item text")
+        return redirect("/todo")
+    else:
+        return redirect("/todo")
+        
 # Update a to-do list item, called by javascript function
 @csrf_exempt
 def updateListItem(request, item_id):
