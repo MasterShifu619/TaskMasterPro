@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>To-Done</title>
 <style>
-	
+	<style>
         * {
             margin: 0;
             padding: 0;
@@ -20,323 +20,168 @@
             padding-left: 0;
         }
 
-        :root {
-            --primary: #2557a7;      /* Bright Blue */
-            --primary-light: #3b82f6; /* Lighter Blue */
-            --secondary: #10b981;    /* Emerald Green */
-            --accent: #8b5cf6;       /* Purple */
-            --warning: #f59e0b;      /* Amber */
-            --error: #ef4444;        /* Red */
-            --surface: #ffffff;
-            --background: #f3f4f6;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --text-light: #ffffff;
-            --border: rgba(0, 0, 0, 0.1);
-        }
-
         /* Topbar styles */
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+.topbar {
+    background-color: #1458a0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .topbar .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
+/* Styling for links in the topbar */
+.topbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
-        .topbar .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
+/* Links hover effect */
+.topbar a:hover {
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
-        .topbar .logo:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+/* Flexbox for horizontal alignment */
+.topbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
 
-        /* Navigation links */
-        .topbar .nav-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
+/* Style for each list item */
+.topbar ul li {
+    margin: 0 15px;
+}
 
-        .topbar a {
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            position: relative;
-            font-size: 1.5rem;
-        }
+/* Responsiveness: adjust padding and font size for smaller screens */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 10px 15px;
+    }
+    
+    .topbar a {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .topbar ul li {
+        margin: 0 10px;
+    }
+}
 
-        .topbar a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+/* Further responsiveness for very small devices */
+@media (max-width: 480px) {
+    .topbar a {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    
+    .topbar ul li {
+        margin: 0 8px;
+    }
+}
 
-        /* Flexbox for horizontal alignment */
-        .topbar ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-        }
+h1 {
+    color: #0fa662;
+    text-align: center;
+}
 
-        /* Style for each list item */
-        .topbar ul li {
-            margin: 0 15px;
-        }
+/* Center the button with proper margin */
+.main button {
+    display: block; /* Ensures the button takes full width and can be centered */
+    margin: 20px auto; /* Centers the button and adds a 20px margin for vertical spacing */
+    cursor: pointer;
+    border-radius: 10px;
+    background: #0fa662;
+    border: 0;
+    font-size: 16px;
+    height: 37px;
+    padding: 0 20px; /* Adds more padding for a comfortable look */
+    width: 80%; /* Reduce width for a cleaner layout */
+    max-width: 300px; /* Ensures the button doesn't stretch too much */
+    font-weight: 500;
+    color: #f9f9f9;
+}
 
-        /* Responsiveness: adjust padding and font size for smaller screens */
-        @media (max-width: 768px) {
-            .topbar {
-                padding: 10px 15px;
-            }
-            
-            .topbar a {
-                font-size: 18px;
-                margin-right: 10px;
-            }
-            
-            .topbar ul li {
-                margin: 0 10px;
-            }
-        }
+.main button:hover {
+    background: #0b8f54;
+}
 
-        /* Further responsiveness for very small devices */
-        @media (max-width: 480px) {
-            .topbar a {
-                font-size: 16px;
-                margin-right: 8px;
-            }
-            
-            .topbar ul li {
-                margin: 0 8px;
-            }
-        }
+/* Center the input fields with a good margin */
+input[type=text], input[type=password], input[type=email] {
+    width: 80%; /* Makes input fields smaller for a cleaner layout */
+    max-width: 400px; /* Limits the width for large screens */
+    margin: 8px auto; /* Centers the input fields horizontally */
+    padding: 12px 20px;
+    display: block; /* Block display allows for centering */
+    border: 0px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 1px 1px 5px #555 inset;
+}
 
-        h1 {
-            color: #0fa662;
-            text-align: center;
-        }
+/* Center the container */
+.container {
+    margin: 50px auto; /* Centers the container horizontally with a top margin */
+    width: 80%; /* Width reduced for a cleaner look */
+    max-width: 500px; /* Restrict max width for larger screens */
+    text-align: center; /* Ensures text and elements are centered */
+}
 
-        /* Center the button with proper margin */
-        .main button {
-            display: block; /* Ensures the button takes full width and can be centered */
-            margin: 20px auto; /* Centers the button and adds a 20px margin for vertical spacing */
-            cursor: pointer;
-            border-radius: 10px;
-            background: #0fa662;
-            border: 0;
-            font-size: 16px;
-            height: 37px;
-            padding: 0 20px; /* Adds more padding for a comfortable look */
-            width: 80%; /* Reduce width for a cleaner layout */
-            max-width: 300px; /* Ensures the button doesn't stretch too much */
-            font-weight: 500;
-            color: #f9f9f9;
-        }
+/* Clear floating elements */
+.right {
+    float: right;
+}
 
-        .main button:hover {
-            background: #0b8f54;
-        }
+/* General main content styles */
+.main {
+    font-size: 20px;
+    padding: 20px; /* Adds some padding around the main content */
+    margin-top: 70px;
+    text-align: center; /* Centers text content inside main */
+}
 
-        /* Center the input fields with a good margin */
-        input[type=text], input[type=password], input[type=email] {
-            width: 80%; /* Makes input fields smaller for a cleaner layout */
-            max-width: 400px; /* Limits the width for large screens */
-            margin: 8px auto; /* Centers the input fields horizontally */
-            padding: 12px 20px;
-            display: block; /* Block display allows for centering */
-            border: 0px;
-            border-radius: 10px;
-            box-sizing: border-box;
-            box-shadow: 1px 1px 5px #555 inset;
-        }
-
-        /* Center the container */
-        .container {
-            margin: 50px auto; /* Centers the container horizontally with a top margin */
-            width: 80%; /* Width reduced for a cleaner look */
-            max-width: 500px; /* Restrict max width for larger screens */
-            text-align: center; /* Ensures text and elements are centered */
-        }
-
-        /* Clear floating elements */
-        .right {
-            float: right;
-        }
-
-        /* General main content styles */
-        .main {
-            font-size: 20px;
-            padding: 20px; /* Adds some padding around the main content */
-            margin-top: 70px;
-            text-align: center; /* Centers text content inside main */
-        }
-
-        /* Login Container */
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 2rem;
-            background: var(--surface);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Login Title */
-        .login-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--primary);
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        /* Form Group */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        /* Labels */
-        .form-group label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Input Fields */
-        .form-group input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 1rem;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-            background: var(--background);
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 87, 167, 0.1);
-        }
-
-        /* Login Button */
-        .login-btn {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--primary);
-            color: var(--text-light);
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 1rem;
-        }
-
-        .login-btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-1px);
-        }
-
-        /* Links Container */
-        .links-container {
-            margin-top: 1.5rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        /* Links */
-        .auth-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .auth-link:hover {
-            color: var(--primary-light);
-            text-decoration: underline;
-        }
-
-        /* Error Messages */
-        .alert {
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-            font-size: 0.875rem;
-        }
-
-    </style>
+</style>
 </head>
 <body>
     <div class="topbar">
-        <div class="nav-left">
-            <a href="/" class="logo">To-Done</a>
-        </div>
+        <ul><li><a href="/">To-Done</a></li></ul>
     </div>
 	<div class="main">
-		<div class="login-container">
-			<h1 class="login-title">Login</h1>
+		<h1>Login</h1>
 
-			{% for message in messages %}
-				{% if message.tags == 'error' %}
-					<div class="alert">{{ message }}</div>
-				{% endif %}
-			{% endfor %}
-			
-			<form method="POST">
-				{% csrf_token %}
-				<div class="form-group">
-					<label for="username">Username*</label>
-					<input type="text" id="username" name="username" required>
-				</div>
-				
-				<div class="form-group">
-					<label for="password">Password*</label>
-					<input type="password" id="password" name="password" required>
-				</div>
-				
-				<button type="submit" class="login-btn">Login</button>
-			</form>
+	    	{% for message in messages %}
+			<div style="text-align: center;" class='alert alert-{{message.tags}}'>{{ message }}</div>
+	    	{% endfor %}
+		
+		{% block content %}
 
-			<div class="links-container">
-				<a href="/register" class="auth-link">Create an account</a>
-				<a href="/password_reset" class="auth-link">Forgot password?</a>
-			</div>
+		{% load crispy_forms_tags %}
+
+		<!--Login-->
+		<div class="container py-5">
+		  <form method="POST">
+			{% csrf_token %}
+			{{ login_form|crispy }}
+			<button class="btn btn-primary" type="submit">Login</button>
+		  </form>
+		  <p class="text-center"><a href="/register">Create an account</a>.</p>
+		  <p class="text-center"><a href="/password_reset">Forget password</a>.</p>
 		</div>
+
+		{% endblock %}
 	</div>
 </body>
 </html>

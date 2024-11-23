@@ -26,6 +26,5 @@ urlpatterns = [
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name="logout"),
     path("password_reset", views.password_reset_request, name="password_reset"),
-    path('user_analytics', views.user_analytics, name='user_analytics'),
-    path('analytics', views.user_analytics, name='user_analytics')
+    path('user_analytics', views.user_analytics, name='user_analytics')
 ]

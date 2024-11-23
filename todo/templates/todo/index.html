@@ -11,24 +11,9 @@
             padding: 0;
             box-sizing: border-box;
         }
-        :root {
-            --primary: #2557a7;      /* Bright Blue */
-            --primary-light: #3b82f6; /* Lighter Blue */
-            --secondary: #10b981;    /* Emerald Green */
-            --accent: #8b5cf6;       /* Purple */
-            --warning: #f59e0b;      /* Amber */
-            --error: #ef4444;        /* Red */
-            --surface: #ffffff;
-            --background: #f3f4f6;
-            --text-primary: #111827;
-            --text-secondary: #4b5563;
-            --text-light: #ffffff;
-            --border: rgba(0, 0, 0, 0.1);
-        }
+
         body {
-            font-family: 'Inter', Calibri, Helvetica, sans-serif;
-            background: var(--background);
-            min-height: 100vh;
+            font-family: Calibri, Helvetica, sans-serif;
         }
 
         ul {
@@ -37,705 +22,526 @@
         }
 
         /* Topbar styles */
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+.topbar {
+    background-color: #1458a0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        /* Navbar Styling */
-        .topbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 64px;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
+/* Styling for links in the topbar */
+.topbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
 
-        .topbar .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
+/* Links hover effect */
+.topbar a:hover {
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
-        .topbar .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
+/* Flexbox for horizontal alignment */
+.topbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
 
-        .topbar .logo:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+/* Style for each list item */
+.topbar ul li {
+    margin: 0 15px;
+}
 
-        /* Navigation links */
-        .topbar .nav-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
+/* Responsiveness: adjust padding and font size for smaller screens */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 10px 15px;
+    }
+    
+    .topbar a {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .topbar ul li {
+        margin: 0 10px;
+    }
+}
 
-        .topbar .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            position: relative;
-        }
+/* Further responsiveness for very small devices */
+@media (max-width: 480px) {
+    .topbar a {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    
+    .topbar ul li {
+        margin: 0 8px;
+    }
+}
 
-        .topbar .nav-links a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
+        
+/* Sidebar (sidenav) styles */
+.sidenav {
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #babadf;
+    padding-top: 20px; /* Enough padding to clear the topbar height */
+    margin-top: 60px; /* Adjusted to match the topbar height */
+    padding-left: 10px;
+    overflow-x: hidden;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    z-index: 99; /* Make sure the sidebar is below the topbar */
+    transition: width 0.3s ease;
+}
 
-        .topbar .nav-links a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0.5rem;
-            right: 0.5rem;
-            height: 2px;
-            background: var(--text-light);
-            border-radius: 2px;
-        }
+/* Sidebar list items */
+.sidenav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px;
+}
 
-        /* Right side user section */
-        .topbar .user-section {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
+.sidenav ul li {
+    padding: 12px 20px;
+    color: #333;
+    text-align: left;
+    font-size: 18px;
+    transition: background 0.3s ease;
+}
 
-        .topbar .welcome-text {
-            color: var(--text-light);
-            font-weight: 500;
-        }
+/* Sidebar link styles */
+.sidenav a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #333;
+    display: block;
+    padding: 10px 20px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
 
-        .topbar .logout-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
+/* Sidebar hover effects */
+.sidenav a:hover {
+    background-color: #e2e2e2;
+    color: #0fa662;
+}
 
-        .topbar .logout-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
-        }
+.sidenav li:hover {
+    background-color: #ddd;
+}
 
-        /* Sidebar Styling */
-        .sidenav {
-            position: fixed;
-            top: 60px;
-            left: 0;
-            width: 300px;
-            height: calc(100vh - 60px);
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            padding: 2rem;
-            overflow-y: auto;
-            box-shadow: 2px 0 4px rgba(0,0,0,0.05);
-        }
+/* Input fields inside the sidebar */
+.sidenav input[type=text],
+.sidenav select {
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
 
-        /* Create Todo Form Styling */
-        .create-todo-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+/* Add button for todo lists */
+.sidenav .addTodoList {
+    padding: 12px 20px; /* Slightly larger padding for a better feel */
+    background: #0fa662;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80%; /* Adjust width to make the button smaller */
+    margin: 30px auto; /* Centers the button horizontally */
+    display: block; /* Ensures it's treated as a block element for centering */
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+.sidenav .addTodoList:hover {
+    background-color: #04502e;
+}
 
-        .form-group label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
+/* Divider (hr) styling */
+.sidenav hr {
+    border: none;
+    height: 1px;
+    background-color: #0fa662;
+    margin: 30px 5%;
+}
 
-        .form-group input,
-        .form-group select {
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-        }
+/* Main content area styling */
+.main {
+    margin-left: 300px; /* Adjusted margin-left to match the width of the left sidebar */
+    margin-right: 500px; /* Right margin for right sidebar */
+    padding: 20px;
+    font-size: 20px;
+    margin-top: 70px; /* Top margin to ensure it doesn't overlap with the topbar */
+    background-color: #fff;
+    transition: margin 0.3s ease;
+}
 
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(15, 166, 98, 0.1);
-            outline: none;
-        }
+/* Links inside the main content */
+.main h2 a {
+    text-decoration: none;
+    color: #0fa662;
+    display: block;
+    padding-left: 5px;
+    transition: color 0.3s ease;
+}
 
-        /* Add Button Styling */
-        .addBtn {
-            background: var(--secondary);
-            color: var(--text-light);
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-        }
+.main h2 a:hover {
+    color: #0b8f54;
+}
 
-        .addBtn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-        }
+/* Message when no lists are available */
+#noListYet {
+    text-decoration: none;
+    color: #0fa662;
+    display: block;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: 500;
+}
 
-        /* Main Content Area */
-        .main {
-            margin-left: 300px;
-            margin-right: 400px;
-            margin-top: 64px;
-            padding: 2rem;
-            min-height: calc(100vh - 64px);
-            background: var(--background);
-            overflow-y: auto;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
+/* Ensures that all children of .main adhere to the box-sizing rule */
+.main * {
+    box-sizing: border-box;
+}
 
-        /* Empty State Styling */
-        .empty-state {
-            background: var(--surface);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            margin: 2rem auto;
-            max-width: 800px;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+/* Removes padding and margins from unordered lists */
+.main ul {
+    margin: 0;
+    padding: 0;
+}
 
-        .empty-state h2 {
-            color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
+/* Styling for list items */
+.main ul li {
+    position: relative;
+    padding: 12px 20px 12px 40px; /* Spacing for the checkbox */
+    list-style-type: none;
+    background: #f9f9f9;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
 
-        .empty-state p {
-            color: var(--text-secondary);
-            font-size: 1rem;
-        }
+/* Label styling */
+.main ul li label {
+    flex-grow: 1;
+    display: inline-block;
+}
 
-        /* Calendar Container */
+/* Hover effect for list items */
+.main ul li:hover {
+    background: #ddd;
+}
+
+/* Completed task (done) styling */
+.main ul li.done {
+    background-color: #3d3939;
+    color: #fff;
+    text-decoration: line-through;
+}
+
+/* Close button for each list item */
+.main ul li .close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #000;
+    background-color: transparent;
+    border: none;
+    padding: 8px;
+    transition: color 0.3s ease;
+}
+
+.main ul li .close:hover {
+    color: #f44336;
+}
+
+
+/* Header styling */
+.main .header {
+    color: black;
+    display: block;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* Ensures clear floats after header */
+.main .header:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Input field for text */
+.main input[type=text] {
+    border: none;
+    border-radius: 10px;
+    width: 75%;
+    padding: 10px;
+    font-size: 16px;
+    box-shadow: inset 1px 1px 5px #555;
+    margin-bottom: 10px;
+}
+
+/* Input field for date */
+.main input[type=date] {
+    border: none;
+    border-radius: 10px;
+    width: 75%;
+    padding: 10px;
+    font-size: 16px;
+    box-shadow: inset 1px 1px 5px #555;
+    margin-bottom: 10px;
+}
+
+/* Input field for color selection */
+.main input[type=color] {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Checkbox styling within list items */
+.main ul li input[type=checkbox] {
+    position: relative;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+
+/* Add button styling */
+.main .addBtn {
+    padding: 9px;
+    width: 30%;
+    background: #0fa662;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 30px auto; /* Centers the button horizontally */
+    display: block; /* Ensures it's treated as a block element for centering */
+}
+
+.main .addBtn:hover {
+    background-color: #bbb;
+}
+
+/* Button styling remains the same */
+.main .add-template-button {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #0fa662;
+    border: 0;
+    font-size: 16px;
+    height: 37px;
+    padding: 0 20px;
+    text-align: center;
+    width: auto;
+    font-weight: 500;
+    color: #f9f9f9;
+    margin: 10px;
+}
+
+.main .add-template-button.delete {
+    background: #a81a0f;
+}
+
+.main .add-template-button:hover {
+    background: #0b8f54;
+}
+
+.main .add-template-button.delete:hover {
+    background: #d11a1a;
+}
+
+/* Flex container to align forms side by side */
+.button-container {
+    display: flex;
+    justify-content: center; /* Aligns buttons at the center */
+    gap: 10px; /* Adds spacing between buttons */
+    margin-top: 20px;
+}
+
+
+/* Customize color button styling */
+.main .add-cust-color-button {
+    position: absolute;
+    right: 50px;
+    top: 0;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #0fa662;
+    color: #f9f9f9;
+    border: 0;
+    font-size: 16px;
+    height: 37px;
+    padding: 0 11px;
+    margin-top: 5px;
+    width: 10%;
+    text-align: center;
+    min-width: 100px;
+    font-weight: 300;
+}
+
+.main .add-cust-color-button:hover {
+    background: #0b8f54;
+}
+
+/* Tag template styling */
+.tag-template {
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid #0fa662;
+    font-size: 16px;
+    height: 40px;
+    text-align: center;
+    width: fit-content;
+    font-weight: 500;
+    color: #0fa662;
+    margin: 10px;
+}
+
+
+    /* Shared list style */
+    .shared-list {
+    color: black;
+    font-size: 12px;
+    margin-top: 5px;
+    padding-left: 5px;
+    }
+
+    /* Flashcard styling */
+    .flashcard {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow effect */
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    }
+
+    .flashcard:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
+    }
+
+
+    /* Flashcard labels */
+    .flashcard label {  
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    }
+
+    /* Flashcard flex container for inputs and buttons */
+    .flashcard .flex-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .popup-container {
+    display: none; /* Hidden by default */
+    position: relative;
+    background-color: #f9f9f9; /* Light background for readability */
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    width: 95%;
+    max-width: 500px; /* Limit max width for cleaner look */
+}
+
+.popup-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-container label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.popup-container textarea {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.popup-container .save-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.popup-container .save-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.popup-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+}
+
+.popup-close-btn:hover {
+    color: #333; /* Darker color on hover */
+}
+
         #calendar {
             position: fixed;
             right: 0;
             top: 70px;
             width: 400px;
-            height: calc(100vh - 70px);
-            background: var(--surface);
-            padding: 1.5rem;
-            z-index: 10;
-        }
-
-        /* Calendar Header */
-        #calendar .fc-header-toolbar {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 12px !important;
-            margin: 0 !important;
-        }
-
-        /* Calendar Title */
-        #calendar .fc-toolbar-title {
-            font-size: 1.75rem !important;
-            font-weight: 700 !important;
-            color: var(--text-primary) !important;
-        }
-
-        /* Calendar Controls */
-        #calendar .fc-toolbar-chunk:last-child {
-            display: flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-        }
-
-        /* Today Button */
-        #calendar .fc-today-button {
-            height: 36px !important;
-            padding: 0 16px !important;
-            background: var(--primary) !important;
-            border: none !important;
-            border-radius: 6px !important;
-        }
-
-        /* Navigation Buttons */
-        #calendar .fc-button-group button {
-            height: 36px !important;
-            width: 36px !important;
-            background: var(--primary) !important;
-            border: none !important;
-            border-radius: 6px !important;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .sidenav {
-                width: 250px;
+            height: 100%;
+            background-color: #f9f9f9;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
             }
-            
-            .main {
-                margin-left: 250px;
-                margin-right: 350px;
-            }
-            
-            #calendar {
-                width: 350px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .main {
-                margin-right: 0;
-            }
-            
-            #calendar {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidenav {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
-            }
-            
-            .sidenav.active {
-                transform: translateX(0);
-            }
-            
-            .main {
-                margin-left: 0;
-            }
-            
-            .topbar {
-                padding: 0 1rem;
-            }
-        }
-
-        /* Calendar Container */
-        .fc-header-toolbar.fc-toolbar {
-            padding: 1rem !important;
-        }
-
-        /* Toolbar Chunks */
-        .fc-toolbar-chunk {
-            display: flex !important;
-            align-items: center !important;
-            gap: 8px !important;
-        }
-
-        /* Today Button */
-        .fc-today-button.fc-button.fc-button-primary {
-            height: 36px !important;
-            padding: 0 16px !important;
-            background: var(--primary) !important;
-            border: none !important;
-            border-radius: 6px !important;
-            font-weight: 500 !important;
-            text-transform: capitalize !important;
-        }
-
-        /* Button Group Container */
-        .fc-button-group {
-            display: flex !important;
-            gap: 4px !important;
-            margin-left: 8px !important;  /* Space between today and nav buttons */
-        }
-
-        /* Navigation Buttons */
-        .fc-prev-button.fc-button,
-        .fc-next-button.fc-button {
-            height: 36px !important;
-            width: 36px !important;
-            background: var(--primary) !important;
-            border: none !important;
-            border-radius: 6px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-
-        /* Hover states */
-        .fc-button:hover {
-            background: var(--primary-light) !important;
-            opacity: 0.9 !important;
-        }
-
-        /* Disabled state */
-        .fc-button:disabled {
-            opacity: 0.6 !important;
-            cursor: not-allowed !important;
-        }
-
-        /* Todo Lists Container */
-        .todo-lists {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding-bottom: 2rem;
-        }
-
-        /* Individual Todo List */
-        .flashcard {
-            background: var(--surface);
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-        }
-
-        /* Color Input Styling */
-        input[type="color"] {
-            width: 40px;  /* Reduced width */
-            height: 30px;  /* Reduced height */
-            padding: 2px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 4px;
-        }
-
-        /* Form Group for Color Input */
-        .form-group input[type="color"] {
-            width: 40px;  /* Override the default full width */
-        }
-
-        /* Color Tag Label */
-        .form-group label[for="InputColor"] {
-            margin-bottom: 0.25rem;
-        }
-
-        /* Add these specific styles */
-        .color-input {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            width: 40px !important;
-            height: 40px !important;
-            padding: 0;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: transparent;
-        }
-
-        /* Override any other styles that might be affecting it */
-        .form-group input[type="color"].color-input {
-            width: 40px !important;
-            height: 40px !important;
-            padding: 0;
-            margin: 0;
-        }
-
-        /* Ensure the container doesn't force a larger size */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            align-items: flex-start;  /* This will prevent stretching */
-        }
-
-        /* Button Container */
-        .button-container {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        /* Base button styles */
-        .button-container button {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex: 1;  /* Make buttons take equal width */
-        }
-
-        /* Save As Template button */
-        .add-template-button {
-            background: var(--primary);
-            color: var(--text-light);
-        }
-
-        .add-template-button:hover {
-            background: var(--primary-light);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(37, 87, 167, 0.2);
-        }
-
-        /* Delete button */
-        .add-template-button.delete {
-            background: var(--error);
-            color: var(--text-light);
-        }
-
-        .add-template-button.delete:hover {
-            background: #dc2626;  /* Slightly darker red */
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
-        }
-
-        /* List Header Styling */
-        .main .flashcard .header h2 a {
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .main .flashcard .header h2 a:hover {
-            text-decoration: underline;
-        }
-
-        /* Tag Button Styling */
-        .main .flashcard .header .tag-template {
-            background: var(--background);
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            margin-left: 8px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        /* Tag Icon Styling */
-        .main .flashcard .header .bi.bi-tag-fill {
-            width: 16px;
-            height: 16px;
-            color: var(--text-secondary);
-        }
-
-        /* List Title and Tag Styling */
-        .main a {
-            color: var(--primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            text-decoration: none;
-            margin-right: 0.5rem;
-        }
-
-        .main a:hover {
-            text-decoration: underline;
-        }
-
-        /* Tag styling */
-        .main a + span {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            background: #e5e7eb;
-            color: var(--text-secondary);
-            border-radius: 16px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-left: 0.5rem;
-        }
-
-        /* List Content Styling */
-        .main .flashcard {
-            padding: 2rem;
-            background: var(--surface);
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Form Group Spacing */
-        .main .flashcard label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* Input Fields */
-        .main .flashcard input[type="text"],
-        .main .flashcard input[type="date"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Color Tag Section */
-        .color-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .color-section label {
-            display: block;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        .color-options {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        /* Hide the extra color box */
-        .color-options .color-box {
-            display: none;  /* This will hide the extra white box */
-        }
-
-        /* Style the color picker and preview */
-        .color-options input[type="color"] {
-            width: 40px;
-            height: 40px;
-            padding: 2px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
-
-        .color-options .color-preview {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
-
-        /* Title and New Task spacing */
-        .main .flashcard h2 {
-            margin-bottom: 2rem;  /* More space after title */
-        }
-
-        /* New Task label */
-        .main .flashcard label {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 0.25rem;  /* Reduced space between label and input */
-            display: block;
-        }
-
-        /* Color Tag section */
-        .main .flashcard .color-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .main .flashcard .color-section label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .main .flashcard .color-options {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        /* Button Styling */
-        .addBtn, 
-        .add-template-button {
-            font-size: 0.875rem;  /* Smaller font size for buttons */
-            padding: 0.75rem 1.5rem;
-        }
-
-        .add-template-button.delete {
-            font-size: 0.875rem;  /* Match font size for delete button */
-        }
-
-        /* Input Fields */
-        .main .flashcard input[type="text"],
-        .main .flashcard input[type="date"] {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 1.5rem;  /* Space between input groups */
-        }
-
-        /* Placeholder Text Color */
-        .main .flashcard input::placeholder {
-            color: #9CA3AF;  /* Grey color for placeholder */
-        }
-
-        /* Date Input Specific */
-        .main .flashcard input[type="date"] {
-            color: #9CA3AF;  /* Grey color for the date placeholder */
-        }
-
-        /* Date Input when filled */
-        .main .flashcard input[type="date"]:not(:placeholder-shown) {
-            color: var(--text-primary);  /* Regular text color when date is selected */
-        }
-
-        /* Color Tag Row */
-        .main .flashcard label[for="Color Tag"] {
-            display: inline-block;
-            margin-right: 1rem;
-        }
-
-        /* Color Picker and Preview */
-        .main .flashcard input[type="color"] {
-            width: 40px;
-            height: 40px;
-            padding: 2px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            margin-right: 0.5rem;
-        }
-
-        /* Hide the last white box */
-        .main .flashcard input[type="color"] + input[type="color"],
-        .main .flashcard input[type="color"] ~ div:last-child {
-            display: none;  /* This will hide the last white box */
-        }
     </style>
     <meta charset="UTF-8">
     <title>To-Done</title>
@@ -743,77 +549,40 @@
 <body>
     {% load todo_extras %}
     <div class="topbar">
-        <div class="nav-left">
-            <a href="/" class="logo">To-Done</a>
-            <div class="nav-links"> 
-                <a href="/todo">Lists</a>
-                <a href="/templates">Templates</a>
-                <a href="/user_analytics">User-Analytics</a>
-            </div>
-        </div>
-
-        <div class="user-section">
-            {% if user.is_authenticated %}
-            <span a href="#" class="welcome-text">Welcome, {{user.username}}</a></span>
-            <a href="/logout" class="logout-btn">Logout</a>
-            {% else %}
-            <a class="tabs" href="/login">Login</a>
-            {% endif %}
-        </div>
+        <ul>
+            <li><a href="/">To-Done</a></li>
+            <li><a class="tabs" href="/todo">Lists</a></li>
+            <li><a class="tabs" href="/templates">Templates</a></li>
+            <li><a class="tabs" href="/user_analytics">User-Analytics</a></li>
+        </ul>
+		<ul style="float: right;">
+		{% if user.is_authenticated %}
+            <li><a href="#">Welcome, {{user.username}}</a></li>
+		  <li><a class="tabs" href="/logout">Logout</a></li>
+		{% else %}
+		  <li><a class="tabs" href="/login">Login</a></li>
+		{% endif %}
+		</ul>
     </div>
     <div class="sidenav">
-        <div class="create-todo-form">
-            <h2>Create a new todo list</h2>
-            <div class="form-group">
-                <label for="create-todo-form"><b>List Name</b></label>
-                <input type="text" id="todoListInput" placeholder="New Todo List">
-            </div>
-            <div class="form-group">
-                <label for="list-tag"><b>Select a tag</b></label>
-                <select id="listTags" onchange="toggleNewTagInput()">
-                    {% for tag in list_tags %}
-                    <option>{{ tag.tag_name }}</option>
-                    {% endfor %}
-                    <option selected>none</option>
-                    <option value="new">--create new tag--</option>
-                </select>
-                <input type="hidden" id="newListTag" placeholder="New List tag">
-            </div>
-            <div class="form-group">
-                <label for="sharedUser"><b>Share with</b></label>
-                <input type="text" id="sharedUser" placeholder="Share this list with...">
-            </div>
-            <span onclick="newTodoList()" class="addBtn">Add</span>
-        </div>
-    </div>
-    <div class="main">
-        {% if latest_lists %}
-            <div class="todo-lists">
-                {% for list in latest_lists %}
-                    <!-- Your existing list rendering code -->
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-state">
-                <h2>You don't have any todo list!</h2>
-                <p>Create your first todo list to get started.</p>
-            </div>
-        {% endif %}
+        <h3>Create a new todo list</h3>
+        <input type="text" id="todoListInput" placeholder="New Todo List">
+        <div>Select a tag for your todo list</div>
+        <select id="listTags" onchange="toggleNewTagInput()">
+            {% for tag in list_tags %}
+            <option>{{ tag.tag_name }}</option>
+            {% endfor %}
+            <option selected>none</option>
+            <option value="new">--create new tag--</option>
+        </select>
+        <input type="hidden" id="newListTag" placeholder="New List tag">
+        <input type="text" id="sharedUser" placeholder="Share this list with...">
+        <span onclick="newTodoList()" class="addTodoList">Add</span>
     </div>
 
     <div id="calendar">
-        <div class="calendar-header">
-            <h2 class="calendar-title">November 2024</h2>
-            <div class="calendar-controls">
-                <button class="today-btn">today</button>
-                <button class="nav-btn">←</button>
-                <button class="nav-btn">→</button>
-            </div>
-        </div>
-        <div class="calendar-grid">
-            <!-- Calendar days will be populated here -->
-        </div>
-    </div>
+        <!-- Calendar content -->
+      </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -871,13 +640,12 @@
                 </div>
 		        <div class="form-group">
                     <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
-                    <input type="color" class="color-input" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
+                    <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
                 </div>
             </form>
             <div>
                 <span onclick="newElement({{ list.id }})" class="addBtn">Add</span>
             </div>
-        </div>
         </div>
         <ul id="{{ "List_"|addstr:list.id }}" class="listItemsUnorderedList">
             {% for list_item in latest_list_items %}
@@ -947,14 +715,11 @@
             </div>
             <div class="form-group">
                 <label for="{{ "InputDue_"|addstr:list.id }}">Due Date</label>
-                <input type="date" class="form-contr    ol" id="{{ "InputDue_"|addstr:list.id }}">
+                <input type="date" class="form-control" id="{{ "InputDue_"|addstr:list.id }}">
             </div>
-            <div class="color-section">
-                <label>Color Tag</label>
-                <div class="color-options">
-                    <input type="color" id="InputColor_{{ list.id }}" value="#f9f9f9">
-                    <div class="color-preview"></div>
-                </div>
+            <div class="form-group">
+                <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
+                <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
             </div>
             <div>
                 <button type="button" onclick="newElement({{ list.id }})" class="addBtn">Add</button> <!-- Add Button -->
@@ -996,9 +761,8 @@
         {% endfor %}
         {% if not latest_lists %}
             {% if not shared_list %}
-        <div class="empty-state">
-            <h2>You don't have any todo list!</h2>
-            <p>Create your first todo list to get started.</p>
+        <div class="header">
+            <h2 id="noListYet">You don't hava any todo list!</h2>
         </div>
             {% endif %}
         {% endif %}
