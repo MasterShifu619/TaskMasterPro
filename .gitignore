@@ -145,6 +145,4 @@ GitHub.sublime-settings
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
-todo.sqlite3
-tmp/
-todo.sqlite3
+*.sqlite3
