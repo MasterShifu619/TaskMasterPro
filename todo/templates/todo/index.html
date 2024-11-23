@@ -736,6 +736,167 @@
         .main .flashcard input[type="color"] ~ div:last-child {
             display: none;  /* This will hide the last white box */
         }
+
+        /* Task Item Container */
+        .listItem {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            margin: 8px 0;
+            background: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            width: 100%;  /* Restore full width */
+        }
+
+        /* Update strikethrough to exclude close button */
+        .listItem.done label,
+        .listItem.done span:not(.close) {  /* Exclude the close button from strikethrough */
+            text-decoration: line-through;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        /* Keep close button styles independent */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            opacity: 1 !important;  /* Ensure opacity stays at 1 */
+        }
+
+        /* Keep the checkbox styling */
+        .listItem input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
+
+        /* Update the checkmark color */
+        .listItem input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary);  /* Use your theme blue color */
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            z-index: 2;
+        }
+
+        /* Optional: If you want to change the checkbox background when checked */
+        .listItem input[type="checkbox"]:checked {
+            background: var(--surface);  /* Keep background white/light */
+            border-color: var(--primary);
+        }
+
+        /* Rest of your existing checkbox styles... */
+
+        /* Task content spacing */
+        .listItem label {
+            margin-right: 24px;  /* Space after task name */
+        }
+
+        /* Date and completion time spacing */
+        .listItem span {
+            margin-right: 24px;  /* Space between date elements */
+        }
+
+        /* Close button */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;  /* Light gray background */
+            border: 1px solid #ddd;     /* Subtle border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);  /* Subtle shadow */
+        }
+
+        /* Hover effect */
+        .listItem .close:hover {
+            background-color: #ff4444;  /* Red background on hover */
+            color: white;              /* White text on hover */
+            border-color: #ff4444;     /* Red border on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Slightly larger shadow on hover */
+        }
+
+        /* Active state when clicked */
+        .listItem .close:active {
+            transform: translateY(-50%) scale(0.95);  /* Slight scale down when clicked */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Make sure the parent has relative positioning */
+        .listItem {
+            position: relative;  /* Add this if not already present */
+            padding-right: 40px;  /* Increase padding to accommodate the moved button */
+        }
+
+        /* Close button styling */
+        .listItem span.close {
+            position: absolute;
+            right: -8px;         /* Push it further right */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: var(--secondary);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Hover effect to match Add button */
+        .listItem span.close:hover {
+            transform: translateY(-50%) translateY(-1px);  /* Keep vertical centering while moving up */
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);  /* Match Add button shadow */
+        }
+
+        /* Make sure parent has proper positioning */
+        li.listItem {  /* Updated to match your HTML structure */
+            position: relative;
+            padding-right: 56px;
+        }
     </style>
     <meta charset="UTF-8">
     <title>To-Done</title>
@@ -1153,20 +1314,25 @@ function markListItemByName() {
         
         // Extract necessary information
         var item_name = this.nextElementSibling.innerHTML;
-        var list_id = this.parentElement.parentElement.id.toString().substring(5); // Extract list ID
-        var list_item_id = this.id.toString().substring(9); // Extract list item ID
-        var is_done = this.parentElement.classList.contains('done'); // Check if the item is marked as done
+        var list_id = this.parentElement.parentElement.id.toString().substring(5);
+        var list_item_id = this.id.toString().substring(9);
+        var is_done = this.parentElement.classList.contains('done');
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000; // Get the current timestamp
+        var finish_on_timestamp = today.getTime() / 1000;
         
-        // Create a new XMLHttpRequest object
         var httpRequest = new XMLHttpRequest();
-        
-        // Set up the POST request to update the item
         httpRequest.open('POST', '/markListItem', true);
         httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         
-        // Prepare the parameters to be sent in the request body
+        // Add onreadystatechange handler for reload
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4) {  // Request is complete
+                if (this.status === 200) {
+                    window.location.reload();
+                }
+            }
+        };
+        
         var params = {
             "list_id": list_id,
             "list_item_name": item_name,
@@ -1175,21 +1341,7 @@ function markListItemByName() {
             "finish_on": finish_on_timestamp
         };
         
-        // Send the request with the parameters as JSON
         httpRequest.send(JSON.stringify(params));
-        
-        // Handle the response
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    // Success: Optionally show a success message or handle UI updates
-                    console.log('Item marked as done/undone successfully');
-                } else {
-                    // Error: Handle error case
-                    console.error('Failed to mark the item. Please try again.');
-                }
-            }
-        };
     }
 }
 
@@ -1277,60 +1429,57 @@ function newElement(list_id, saved_to_database = true) {
 }
 
 function newTodoList() {
-    var li = document.createElement("li")
-    var li_a = document.createElement("a")
-    var leftSideBar = document.getElementById("todoListInput")
+    var li = document.createElement("li");
+    var li_a = document.createElement("a");
+    var leftSideBar = document.getElementById("todoListInput");
     var selectedTag = document.getElementById("listTags").value;
     var listTag = selectedTag;
     var create_new_tag = false;
     var sharedUser = document.getElementById("sharedUser").value;
 
-    if(selectedTag==='new'){
+    if(selectedTag === 'new') {
         listTag = document.getElementById("newListTag").value;
         create_new_tag = true;
     }
-    var listTag = selectedTag==='new'? document.getElementById("newListTag").value : selectedTag;
-    var inputValue = leftSideBar.value
-    console.log(inputValue)
+    var inputValue = leftSideBar.value;
+    
     if (inputValue === '') {
-        alert("You must write something!")
+        alert("You must write something!");
     }
-    else if(listTag === ''){
+    else if(listTag === '') {
         alert("Select a tag");
     }
     else {
         // add new to-do list to the
-        li_a.innerHTML = inputValue
-        li.appendChild(li_a)
+        li_a.innerHTML = inputValue;
+        li.appendChild(li_a);
 
         leftSideBar.insertBefore(li, leftSideBar.children[leftSideBar.children.length - 1]);
-        var today = new Date()
-        var create_on_timestamp = today.getTime() / 1000
-        // TODO Save new todo list to database
-        var httpRequest = new XMLHttpRequest()
-        // {#httpRequest.onreadystatechange = alertContents;#}
-        httpRequest.open('POST', '/createNewTodoList');
-        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8")
-        // {#var token = {% csrf_token %}#}
+        var today = new Date();
+        var create_on_timestamp = today.getTime() / 1000;
+        
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', '/createNewTodoList', true);  // Added true for async
+        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
+        
         var params = {
             "list_name": inputValue,
             "create_on": create_on_timestamp,
             "list_tag": listTag,
             "create_new_tag": create_new_tag,
             "shared_user": sharedUser,
-        }
+        };
 
-        // httpRequest.responseType = 'text';
-
-        if (httpRequest.readyState === httpRequest.DONE){
-            if (httpRequest.status == 200) {
-                console.log("The request has been made");
+        // Move the reload inside the onreadystatechange handler
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4) {  // Request is complete
+                if (this.status === 200) {
+                    window.location.reload();
+                }
             }
-        }
+        };
 
-        httpRequest.send(JSON.stringify(params))
-
-        window.location.reload();
+        httpRequest.send(JSON.stringify(params));
     }
 }
 
