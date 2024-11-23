@@ -198,19 +198,29 @@ def cloneListItem(request):
     if request.method == 'POST':
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
+        list_id = body['list_id']
+        list_item = body['list_item']
         list_item_id = body['list_item_id']
-        print("list_item_id: ", list_item_id)
+        new_item_name = body['new_item_name']
+        new_due_date = body['new_due_date']
+        new_color = body['new_color']
+        create_on = int(datetime.datetime.now().timestamp())
+        create_on_time = datetime.datetime.fromtimestamp(create_on)
+        finished_on_time = datetime.datetime.fromtimestamp(create_on)
+        print(new_item_name)
+        print(create_on)
+        result_item_id = -1
+               
         try:
             with transaction.atomic():
-                being_removed_item = ListItem.objects.get(id=list_item_id)
-                being_removed_item.delete()
-        except IntegrityError as e:
-            print(str(e))
-            print("unknown error occurs when trying to update todo list item text")
-        return redirect("/todo")
-    else:
-        return redirect("/todo")
-        
+                todo_list_item = ListItem(item_name=new_item_name, created_on=create_on_time, finished_on=finished_on_time, due_date=new_due_date, tag_color=new_color, list_id=list_id, item_text="", is_done=False)
+                todo_list_item.save()
+                result_item_id = todo_list_item.id
+        except IntegrityError:
+            print("unknown error occurs when trying to create and save a new todo list")
+            return JsonResponse({'item_id': -1})
+        return JsonResponse({'item_id': result_item_id})  # Sending an success response
+
 # Update a to-do list item, called by javascript function
 @csrf_exempt
 def updateListItem(request, item_id):

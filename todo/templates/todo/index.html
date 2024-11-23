@@ -820,20 +820,89 @@ for (i = 0; i < clone.length; i++) {
 }
 
 function cloneListItem() {
-    // hide layout first
-    var div = this.parentElement
-    div.style.display = "none"
 
-    // send post request to delete the actual list item
-    var list_item_id = this.parentElement.getElementsByTagName("input")[0].id.toString().substring(9)
-    var httpRequest = new XMLHttpRequest()
-    httpRequest.open('POST', '/cloneListItem');
-    httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8")
-    var params = {
-        "list_item_id": list_item_id
-    }
-    httpRequest.send(JSON.stringify(params))
+    var listItem = this.parentElement;
+    var listId = this.parentElement.parentElement.id.toString().substring(5)
+    var listItemId = listItem.getElementsByTagName("input")[0].id.toString().substring(9);
+    var itemName = listItem.querySelector('label').textContent;
+    var dueDate = listItem.querySelector('label[style^="color"]').textContent.split(': ')[1];
+    var color = listItem.style.backgroundColor;
+
+    // Create popup container
+    var popupContainer = document.createElement('div');
+    popupContainer.className = 'popup-container';
+    popupContainer.style.display = 'block';
+
+    // Popup content
+    popupContainer.innerHTML = `
+        <span class="popup-close-btn">&times;</span>
+        <h3>Clone Task</h3>
+        <form id="cloneForm">
+            <div class="form-group">
+                <label for="cloneItemName">Task Name:</label>
+                <input type="text" id="cloneItemName" value="${itemName}">
+            </div>
+            <div class="form-group">
+                <label for="cloneDueDate">Due Date:</label>
+                <input type="date" id="cloneDueDate" value="${dueDate}">
+            </div>
+            <div class="form-group">
+                <label for="cloneColor">Color Tag:</label>
+                <input type="color" id="cloneColor" value="${color}">
+            </div>
+            <button type="submit" class="addBtn">Clone Task</button>
+        </form>
+    `;
+
+    // Insert popup after the list item
+    listItem.insertAdjacentElement('afterend', popupContainer);
+
+    // Close button functionality
+    popupContainer.querySelector('.popup-close-btn').onclick = function() {
+        popupContainer.remove();
+    };
+
+    // Form submission
+    popupContainer.querySelector('#cloneForm').onsubmit = function(e) {
+        e.preventDefault();
+        var newItemName = document.getElementById('cloneItemName').value;
+        var newDueDate = document.getElementById('cloneDueDate').value;
+        var newColor = document.getElementById('cloneColor').value;
+
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', '/cloneListItem');
+        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
+        var params = {
+            "list_id": listId,
+            "list_item": listItem,
+            "list_item_id": listItemId+1,
+            "new_item_name": newItemName,
+            "new_due_date": newDueDate,
+            "new_color": newColor
+        };
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                // Refresh the page or update the list dynamically
+                location.reload();
+            }
+        };
+        httpRequest.send(JSON.stringify(params));
+        popupContainer.remove();
+    };
 }
+
+
+
+//     // send post request to clone the actual list item
+//     var list_item_id = this.parentElement.getElementsByTagName("input")[0].id.toString().substring(9)
+//     var httpRequest = new XMLHttpRequest()
+//     httpRequest.open('POST', '/cloneListItem');
+//     httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8")
+//     var params = {
+//         "list_item_id": list_item_id
+//     }
+//     httpRequest.send(JSON.stringify(params))
+// }
 
 var list = document.getElementsByClassName("listItemsUnorderedList");
 
