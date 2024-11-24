@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'> -->
-    <!-- <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-curved/css/uicons-solid-curved.css'> -->
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'> 
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-curved/css/uicons-solid-curved.css'>
     
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
@@ -256,7 +256,7 @@
         .emoji-btn:hover {
             transform: scale(1.2);
         }
-        
+
         /* Calendar Container */
         #calendar {
             position: fixed;
@@ -1232,6 +1232,7 @@
                         {% if list_item.is_done == 1 %}
                             <p>It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</p>
                         {% endif %}
+                        <span class="clone"><i class="fi fi-rs-clone"></i></span>
                         <span class="close">x</span>
                     </li>
                 {% endif %}
