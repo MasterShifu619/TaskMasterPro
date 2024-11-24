@@ -304,6 +304,17 @@
     color: #f44336;
 }
 
+.rating {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Add other styles for your popup */
+    width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
 
 /* Header styling */
 .main .header {
@@ -551,6 +562,24 @@
 
 .popup-close-btn:hover {
     color: #333; /* Darker color on hover */
+}
+.emoji-rating {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.emoji-btn {
+    font-size: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.emoji-btn:hover {
+    transform: scale(1.2);
 }
 
         #calendar {
@@ -1037,54 +1066,86 @@ var listItemsCheckBoxes = document.querySelectorAll("input[type=checkbox]");
     });
 
 
-// mark item as done or undo it
 function markListItemByName() {
     if (this.parentElement.tagName === 'LI') {
-        // Toggle the "done" class for the list item
-        this.parentElement.classList.toggle('done');
-        
-        // Extract necessary information
         var item_name = this.nextElementSibling.innerHTML;
-        var list_id = this.parentElement.parentElement.id.toString().substring(5); // Extract list ID
-        var list_item_id = this.id.toString().substring(9); // Extract list item ID
-        var is_done = this.parentElement.classList.contains('done'); // Check if the item is marked as done
+        var list_id = this.parentElement.parentElement.id.toString().substring(5);
+        var list_item_id = this.id.toString().substring(9);
+        var is_done = this.checked;
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000; // Get the current timestamp
-        
-        // Create a new XMLHttpRequest object
-        var httpRequest = new XMLHttpRequest();
-        
-        // Set up the POST request to update the item
-        httpRequest.open('POST', '/markListItem', true);
-        httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        
-        // Prepare the parameters to be sent in the request body
-        var params = {
-            "list_id": list_id,
-            "list_item_name": item_name,
-            "is_done": is_done,
-            "list_item_id": list_item_id,
-            "finish_on": finish_on_timestamp
-        };
-        
-        // Send the request with the parameters as JSON
-        httpRequest.send(JSON.stringify(params));
-        
-        // Handle the response
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    // Success: Optionally show a success message or handle UI updates
-                    console.log('Item marked as done/undone successfully');
-                } else {
-                    // Error: Handle error case
-                    console.error('Failed to mark the item. Please try again.');
-                }
-            }
-        };
+        var finish_on_timestamp = today.getTime() / 1000;
+
+        if (is_done) {
+            showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp);
+        } else {
+            updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp);
+        }
     }
 }
 
+function showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp) {
+    var popupContainer = document.createElement('div');
+    popupContainer.className = 'rating popup-container';
+    popupContainer.style.display = 'block';
+    popupContainer.style.marginTop = '25px'
+
+    popupContainer.innerHTML = `
+        <span class="popup-close-btn">&times;</span>
+        <h3>Rate Task: ${item_name}</h3>
+        <div class="emoji-rating">
+            <button class="emoji-btn" data-rating="3">😃</button>
+            <button class="emoji-btn" data-rating="2">😐</button>
+            <button class="emoji-btn" data-rating="1">😞</button>
+        </div>
+    `;
+
+    document.body.appendChild(popupContainer);
+
+    popupContainer.querySelector('.popup-close-btn').onclick = function() {
+        popupContainer.remove();
+    };
+
+    var emojiButtons = popupContainer.querySelectorAll('.emoji-btn');
+    emojiButtons.forEach(function(button) {
+        button.onclick = function() {
+            var rating = this.getAttribute('data-rating');
+            updateTaskStatus(list_id, item_name, list_item_id, true, finish_on_timestamp, rating);
+            popupContainer.remove();
+        };
+    });
+}
+
+function updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp, rating = null) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', '/markListItem', true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    var params = {
+        "list_id": list_id,
+        "list_item_name": item_name,
+        "is_done": is_done,
+        "list_item_id": list_item_id,
+        "finish_on": finish_on_timestamp,
+        "rating": rating
+    };
+
+    httpRequest.send(JSON.stringify(params));
+
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState === 4) {
+            if (httpRequest.status === 200) {
+                console.log('Item updated successfully');
+                if (is_done) {
+                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.add('done');
+                } else {
+                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.remove('done');
+                }
+            } else {
+                console.error('Failed to update the item. Please try again.');
+            }
+        }
+    };
+}
 
 // Use Array.forEach to add an event listener to each checkbox.
 listItemsCheckBoxes.forEach(function(checkbox) {
