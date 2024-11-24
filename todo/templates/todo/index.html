@@ -563,6 +563,585 @@
             box-shadow: -2px 0 5px rgba(0,0,0,0.1);
             overflow-y: auto;
             }
+            
+            .main {
+                margin-left: 250px;
+                margin-right: 350px;
+            }
+            
+            #calendar {
+                width: 350px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main {
+                margin-right: 0;
+            }
+            
+            #calendar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidenav {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidenav.active {
+                transform: translateX(0);
+            }
+            
+            .main {
+                margin-left: 0;
+            }
+            
+            .topbar {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Calendar Container */
+        .fc-header-toolbar.fc-toolbar {
+            padding: 1rem !important;
+        }
+
+        /* Toolbar Chunks */
+        .fc-toolbar-chunk {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        /* Today Button */
+        .fc-today-button.fc-button.fc-button-primary {
+            height: 36px !important;
+            padding: 0 16px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            text-transform: capitalize !important;
+        }
+
+        /* Button Group Container */
+        .fc-button-group {
+            display: flex !important;
+            gap: 4px !important;
+            margin-left: 8px !important;  /* Space between today and nav buttons */
+        }
+
+        /* Navigation Buttons */
+        .fc-prev-button.fc-button,
+        .fc-next-button.fc-button {
+            height: 36px !important;
+            width: 36px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Hover states */
+        .fc-button:hover {
+            background: var(--primary-light) !important;
+            opacity: 0.9 !important;
+        }
+
+        /* Disabled state */
+        .fc-button:disabled {
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* Todo Lists Container */
+        .todo-lists {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Individual Todo List */
+        .flashcard {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        /* Color Input Styling */
+        input[type="color"] {
+            width: 40px;  /* Reduced width */
+            height: 30px;  /* Reduced height */
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        /* Form Group for Color Input */
+        .form-group input[type="color"] {
+            width: 40px;  /* Override the default full width */
+        }
+
+        /* Color Tag Label */
+        .form-group label[for="InputColor"] {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Add these specific styles */
+        .color-input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: transparent;
+        }
+
+        /* Override any other styles that might be affecting it */
+        .form-group input[type="color"].color-input {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Ensure the container doesn't force a larger size */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;  /* This will prevent stretching */
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Base button styles */
+        .button-container button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;  /* Make buttons take equal width */
+        }
+
+        /* Save As Template button */
+        .add-template-button {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+
+        .add-template-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(37, 87, 167, 0.2);
+        }
+
+        /* Delete button */
+        .add-template-button.delete {
+            background: var(--error);
+            color: var(--text-light);
+        }
+
+        .add-template-button.delete:hover {
+            background: #dc2626;  /* Slightly darker red */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+
+        /* List Header Styling */
+        .main .flashcard .header h2 a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .main .flashcard .header h2 a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tag Button Styling */
+        .main .flashcard .header .tag-template {
+            background: var(--background);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Tag Icon Styling */
+        .main .flashcard .header .bi.bi-tag-fill {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* List Title and Tag Styling */
+        .main a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+
+        .main a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tag styling */
+        .main a + span {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: #e5e7eb;
+            color: var(--text-secondary);
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        /* List Content Styling */
+        .main .flashcard {
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Form Group Spacing */
+        .main .flashcard label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Input Fields */
+        .main .flashcard input[type="text"],
+        .main .flashcard input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Color Tag Section */
+        .color-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .color-section label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-options {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Hide the extra color box */
+        .color-options .color-box {
+            display: none;  /* This will hide the extra white box */
+        }
+
+        /* Style the color picker and preview */
+        .color-options input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .color-options .color-preview {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        /* Title and New Task spacing */
+        .main .flashcard h2 {
+            margin-bottom: 2rem;  /* More space after title */
+        }
+
+        /* New Task label */
+        .main .flashcard label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;  /* Reduced space between label and input */
+            display: block;
+        }
+
+        /* Color Tag section */
+        .main .flashcard .color-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .main .flashcard .color-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .main .flashcard .color-options {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Button Styling */
+        .addBtn, 
+        .add-template-button {
+            font-size: 0.875rem;  /* Smaller font size for buttons */
+            padding: 0.75rem 1.5rem;
+        }
+
+        .add-template-button.delete {
+            font-size: 0.875rem;  /* Match font size for delete button */
+        }
+
+        /* Input Fields */
+        .main .flashcard input[type="text"],
+        .main .flashcard input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;  /* Space between input groups */
+        }
+
+        /* Placeholder Text Color */
+        .main .flashcard input::placeholder {
+            color: #9CA3AF;  /* Grey color for placeholder */
+        }
+
+        /* Date Input Specific */
+        .main .flashcard input[type="date"] {
+            color: #9CA3AF;  /* Grey color for the date placeholder */
+        }
+
+        /* Date Input when filled */
+        .main .flashcard input[type="date"]:not(:placeholder-shown) {
+            color: var(--text-primary);  /* Regular text color when date is selected */
+        }
+
+        /* Color Tag Row */
+        .main .flashcard label[for="Color Tag"] {
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        /* Color Picker and Preview */
+        .main .flashcard input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        /* Hide the last white box */
+        .main .flashcard input[type="color"] + input[type="color"],
+        .main .flashcard input[type="color"] ~ div:last-child {
+            display: none;  /* This will hide the last white box */
+        }
+
+        /* Task Item Container */
+        .listItem {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            margin: 8px 0;
+            background: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            width: 100%;  /* Restore full width */
+        }
+
+        /* Update strikethrough to exclude close button */
+        .listItem.done label,
+        .listItem.done span:not(.close) {  /* Exclude the close button from strikethrough */
+            text-decoration: line-through;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        /* Keep close button styles independent */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            opacity: 1 !important;  /* Ensure opacity stays at 1 */
+        }
+
+        /* Keep the checkbox styling */
+        .listItem input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
+
+        /* Update the checkmark color */
+        .listItem input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary);  /* Use your theme blue color */
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            z-index: 2;
+        }
+
+        /* Optional: If you want to change the checkbox background when checked */
+        .listItem input[type="checkbox"]:checked {
+            background: var(--surface);  /* Keep background white/light */
+            border-color: var(--primary);
+        }
+
+        /* Rest of your existing checkbox styles... */
+
+        /* Task content spacing */
+        .listItem label {
+            margin-right: 24px;  /* Space after task name */
+        }
+
+        /* Date and completion time spacing */
+        .listItem span {
+            margin-right: 24px;  /* Space between date elements */
+        }
+
+        /* Close button */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;  /* Light gray background */
+            border: 1px solid #ddd;     /* Subtle border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);  /* Subtle shadow */
+        }
+
+        /* Hover effect */
+        .listItem .close:hover {
+            background-color: #ff4444;  /* Red background on hover */
+            color: white;              /* White text on hover */
+            border-color: #ff4444;     /* Red border on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Slightly larger shadow on hover */
+        }
+
+        /* Active state when clicked */
+        .listItem .close:active {
+            transform: translateY(-50%) scale(0.95);  /* Slight scale down when clicked */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Make sure the parent has relative positioning */
+        .listItem {
+            position: relative;  /* Add this if not already present */
+            padding-right: 40px;  /* Increase padding to accommodate the moved button */
+        }
+
+        /* Close button styling */
+        .listItem span.close {
+            position: absolute;
+            right: -8px;         /* Push it further right */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: var(--secondary);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Hover effect to match Add button */
+        .listItem span.close:hover {
+            transform: translateY(-50%) translateY(-1px);  /* Keep vertical centering while moving up */
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);  /* Match Add button shadow */
+        }
+
+        /* Make sure parent has proper positioning */
+        li.listItem {  /* Updated to match your HTML structure */
+            position: relative;
+            padding-right: 56px;
+        }
     </style>
     <meta charset="UTF-8">
     <title>To-Done</title>
@@ -1032,20 +1611,25 @@ function markListItemByName() {
         
         // Extract necessary information
         var item_name = this.nextElementSibling.innerHTML;
-        var list_id = this.parentElement.parentElement.id.toString().substring(5); // Extract list ID
-        var list_item_id = this.id.toString().substring(9); // Extract list item ID
-        var is_done = this.parentElement.classList.contains('done'); // Check if the item is marked as done
+        var list_id = this.parentElement.parentElement.id.toString().substring(5);
+        var list_item_id = this.id.toString().substring(9);
+        var is_done = this.parentElement.classList.contains('done');
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000; // Get the current timestamp
+        var finish_on_timestamp = today.getTime() / 1000;
         
-        // Create a new XMLHttpRequest object
         var httpRequest = new XMLHttpRequest();
-        
-        // Set up the POST request to update the item
         httpRequest.open('POST', '/markListItem', true);
         httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         
-        // Prepare the parameters to be sent in the request body
+        // Add onreadystatechange handler for reload
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4) {  // Request is complete
+                if (this.status === 200) {
+                    window.location.reload();
+                }
+            }
+        };
+        
         var params = {
             "list_id": list_id,
             "list_item_name": item_name,
@@ -1054,21 +1638,7 @@ function markListItemByName() {
             "finish_on": finish_on_timestamp
         };
         
-        // Send the request with the parameters as JSON
         httpRequest.send(JSON.stringify(params));
-        
-        // Handle the response
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    // Success: Optionally show a success message or handle UI updates
-                    console.log('Item marked as done/undone successfully');
-                } else {
-                    // Error: Handle error case
-                    console.error('Failed to mark the item. Please try again.');
-                }
-            }
-        };
     }
 }
 
@@ -1156,60 +1726,57 @@ function newElement(list_id, saved_to_database = true) {
 }
 
 function newTodoList() {
-    var li = document.createElement("li")
-    var li_a = document.createElement("a")
-    var leftSideBar = document.getElementById("todoListInput")
+    var li = document.createElement("li");
+    var li_a = document.createElement("a");
+    var leftSideBar = document.getElementById("todoListInput");
     var selectedTag = document.getElementById("listTags").value;
     var listTag = selectedTag;
     var create_new_tag = false;
     var sharedUser = document.getElementById("sharedUser").value;
 
-    if(selectedTag==='new'){
+    if(selectedTag === 'new') {
         listTag = document.getElementById("newListTag").value;
         create_new_tag = true;
     }
-    var listTag = selectedTag==='new'? document.getElementById("newListTag").value : selectedTag;
-    var inputValue = leftSideBar.value
-    console.log(inputValue)
+    var inputValue = leftSideBar.value;
+    
     if (inputValue === '') {
-        alert("You must write something!")
+        alert("You must write something!");
     }
-    else if(listTag === ''){
+    else if(listTag === '') {
         alert("Select a tag");
     }
     else {
         // add new to-do list to the
-        li_a.innerHTML = inputValue
-        li.appendChild(li_a)
+        li_a.innerHTML = inputValue;
+        li.appendChild(li_a);
 
         leftSideBar.insertBefore(li, leftSideBar.children[leftSideBar.children.length - 1]);
-        var today = new Date()
-        var create_on_timestamp = today.getTime() / 1000
-        // TODO Save new todo list to database
-        var httpRequest = new XMLHttpRequest()
-        // {#httpRequest.onreadystatechange = alertContents;#}
-        httpRequest.open('POST', '/createNewTodoList');
-        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8")
-        // {#var token = {% csrf_token %}#}
+        var today = new Date();
+        var create_on_timestamp = today.getTime() / 1000;
+        
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', '/createNewTodoList', true);  // Added true for async
+        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
+        
         var params = {
             "list_name": inputValue,
             "create_on": create_on_timestamp,
             "list_tag": listTag,
             "create_new_tag": create_new_tag,
             "shared_user": sharedUser,
-        }
+        };
 
-        // httpRequest.responseType = 'text';
-
-        if (httpRequest.readyState === httpRequest.DONE){
-            if (httpRequest.status == 200) {
-                console.log("The request has been made");
+        // Move the reload inside the onreadystatechange handler
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4) {  // Request is complete
+                if (this.status === 200) {
+                    window.location.reload();
+                }
             }
-        }
+        };
 
-        httpRequest.send(JSON.stringify(params))
-
-        window.location.reload();
+        httpRequest.send(JSON.stringify(params));
     }
 }
 

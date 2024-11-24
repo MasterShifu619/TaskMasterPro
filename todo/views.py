@@ -739,4 +739,10 @@ def create_due_tasks_message(user, tasks):
     message += "\nPlease complete them on time!"
     return message
 
+def delete_template(request, template_id):
+    if request.method == 'POST':
+        template = get_object_or_404(Template, id=template_id)
+        template.delete()
+        return redirect('todo:template')  # Use 'todo:template' instead of just 'templates'
+
 
