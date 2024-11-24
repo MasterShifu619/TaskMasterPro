@@ -1549,17 +1549,52 @@ var listItemsCheckBoxes = document.querySelectorAll("input[type=checkbox]");
 
 function markListItemByName() {
     if (this.parentElement.tagName === 'LI') {
+        var checkbox = this;
         var item_name = this.nextElementSibling.innerHTML;
         var list_id = this.parentElement.parentElement.id.toString().substring(5);
         var list_item_id = this.id.toString().substring(9);
         var is_done = this.checked;
         var today = new Date();
-        var finish_on_timestamp = is_done? today.getTime() / 1000 : 0;
+        var finish_on_timestamp = is_done ? today.getTime() / 1000 : 0;
+
+        // Disable the checkbox while processing
+        checkbox.disabled = true;
 
         if (is_done) {
             showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp);
         } else {
-            updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp);
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open('POST', '/markListItem', true);
+            httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+            var params = {
+                "list_id": list_id,
+                "list_item_name": item_name,
+                "is_done": false,
+                "list_item_id": list_item_id,
+                "finish_on": 0,
+                "rating": 0  // Set a default rating of 0 for unchecked items
+            };
+
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState === 4) {
+                    checkbox.disabled = false;
+                    if (httpRequest.status === 200) {
+                        var listItem = checkbox.parentElement;
+                        listItem.classList.remove('done');
+                        var completionTime = listItem.querySelector('.completion-time');
+                        if (completionTime) {
+                            completionTime.remove();
+                        }
+                    } else {
+                        // If update failed, revert checkbox state
+                        checkbox.checked = true;
+                        console.error('Failed to update task status');
+                    }
+                }
+            };
+
+            httpRequest.send(JSON.stringify(params));
         }
     }
 }

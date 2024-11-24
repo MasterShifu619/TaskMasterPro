@@ -241,9 +241,6 @@ def addNewListItem(request):
 # Mark a to-do list item as done/not done, called by javascript function
 @csrf_exempt
 def markListItem(request):
-    """
-    Mark a list item as done or undo it
-    """
     if not request.user.is_authenticated:
         return redirect("/login")
     if request.method == 'POST':
@@ -252,31 +249,37 @@ def markListItem(request):
         list_id = body['list_id']
         list_item_name = body['list_item_name']
         list_item_id = body['list_item_id']
-        rating = body['rating']
-        # remove the first " and last "
+        rating = body.get('rating', 0)  # Default to 0 if no rating provided
         list_item_is_done = True
         is_done_str = str(body['is_done'])
         finish_on = body['finish_on']
         finished_on_time = datetime.datetime.fromtimestamp(finish_on)
-        print("is_done: " + str(body['is_done']))
+
         if is_done_str == "0" or is_done_str == "False" or is_done_str == "false":
             list_item_is_done = False
+            rating = 0  # Set rating to 0 when unchecking
+
         try:
             with transaction.atomic():
                 query_list = List.objects.get(id=list_id)
                 query_item = ListItem.objects.get(id=list_item_id)
                 query_item.is_done = list_item_is_done
-                query_item.rating = rating
-                query_item.finished_on = finished_on_time
+                query_item.rating = rating  # Rating will always have a value now
+                if list_item_is_done:
+                    query_item.finished_on = finished_on_time
+                else:
+                    query_item.finished_on = None
                 query_item.save()
-                # Sending an success response
-                return JsonResponse({'item_name': query_item.item_name, 'list_name': query_list.title_text, 'item_text': query_item.item_text})
-        except IntegrityError:
-            print("query list item" + str(list_item_name) + " failed!")
-            JsonResponse({})
-        return HttpResponse("Success!")  # Sending an success response
-    else:
-        return HttpResponse("Request method is not a Post")
+                return JsonResponse({
+                    'success': True,
+                    'item_name': query_item.item_name,
+                    'list_name': query_list.title_text,
+                    'item_text': query_item.item_text
+                })
+        except IntegrityError as e:
+            print(f"Error updating list item: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 # Get all the list tags by user id
 @csrf_exempt
