@@ -317,6 +317,7 @@
 
             calendar.render();
         });
+        
     </script>
     
     <div class="content">
@@ -350,6 +351,10 @@
             <h2>Monthly Task Completion</h2>
             <canvas id="monthlyChart" width="300" height="150"></canvas>
         </div>
+        <div class="chart-container">
+            <h2>Task Ratings Distribution</h2>
+            <canvas id="ratingChart" width="300" height="150"></canvas>
+        </div>
     </div>
 
     <script>
@@ -369,6 +374,7 @@
             },
             options: { responsive: true }
         });
+
 
         const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
         new Chart(weeklyCtx, {
@@ -396,6 +402,39 @@
                 }]
             },
             options: { responsive: true }
+        });
+        const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+        new Chart(ratingCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Satisfactory', 'Neutral', 'Unsatisfactory'],
+            datasets: [{
+            data: [{{ ratings_3 }}, {{ ratings_2 }}, {{ ratings_1 }}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(255, 206, 86, 0.8)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'bottom',
+            },
+            title: {
+                display: true,
+                text: 'Task Ratings Distribution'
+            }
+            }
+        }
         });
     </script>
 
