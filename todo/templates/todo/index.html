@@ -864,13 +864,13 @@
         /* Make sure parent has proper positioning */
         li.listItem {  /* Updated to match your HTML structure */
             position: relative;
-            padding-right: 56px;
+            padding-right: 80px;
         }
 
         /* Add this to your CSS section */
         .listItem .clone {
             position: absolute;
-            right: 48px;  /* Position it to the left of the close button */
+            right: 30px;  /* Position it to the left of the close button */
             top: 50%;
             transform: translateY(-50%);
             padding: 6px 10px;
@@ -969,6 +969,33 @@
             display: flex;
             gap: 1rem;
         }
+
+        /* Popup Close Button */
+        .popup-close-btn {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            color: var(--error);
+        }
+
+        /* Popup Container (if not already present) */
+        .popup-container {
+            position: relative;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
     </style>
     <meta charset="UTF-8">
     <title>To-Done</title>
@@ -1027,14 +1054,6 @@
                         <div class="list-header">
                             <h3>{{ list.title_text }}</h3>
                             <!-- Add list controls (delete, template, etc.) -->
-                        </div>
-                        
-                        <!-- Add new task form -->
-                        <div class="add-task-form">
-                            <input type="text" id="InputText_{{ list.id }}" class="form-control" placeholder="New Task">
-                            <input type="date" id="InputDue_{{ list.id }}" class="form-control">
-                            <input type="color" id="InputColor_{{ list.id }}" value="#f3f4f6">
-                            <button onclick="newElement({{ list.id }})" class="addBtn">Add</button>
                         </div>
                         
                         <!-- List items -->
@@ -1137,8 +1156,11 @@
                   <input type="date" class="form-control" id="{{ "InputDue_"|addstr:list.id }}">
                 </div>
 		        <div class="form-group">
-                    <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
-                    <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
+                    <label for="InputColor_{{ list.id }}">Color Tag:</label>
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                        <input type="color" id="InputColor_{{ list.id }}" name="InputColor_{{ list.id }}" value="#FFFFFF" style="width: 30px; height: 30px; padding: 0;">
+                        <div style="width: 30px; height: 30px; border: 1px solid #ccc; background-color: {{ list_item.tag_color }}"></div>
+                    </div>
                 </div>
             </form>
             <div>
@@ -1205,16 +1227,19 @@
         
         <form>
             <div class="form-group">
-                <label for="{{ "InputText_"|addstr:list.id }}">New Task</label>
-                <input type="text" class="form-control" id="{{ "InputText_"|addstr:list.id }}">
+                <label for="InputText_{{ list.id }}">New Task</label>
+                <input type="text" class="form-control" id="InputText_{{ list.id }}">
             </div>
             <div class="form-group">
-                <label for="{{ "InputDue_"|addstr:list.id }}">Due Date</label>
-                <input type="date" class="form-control" id="{{ "InputDue_"|addstr:list.id }}">
+                <label for="InputDue_{{ list.id }}">Due Date</label>
+                <input type="date" class="form-control" id="InputDue_{{ list.id }}">
             </div>
             <div class="form-group">
-                <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
-                <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
+                <label for="InputColor_{{ list.id }}">Color Tag:</label>
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                    <input type="color" id="InputColor_{{ list.id }}" name="InputColor_{{ list.id }}" value="#FFFFFF" style="width: 30px; height: 30px; padding: 0;">
+                    <div style="width: 30px; height: 30px; border: 1px solid #ccc; background-color: {{ list_item.tag_color }}"></div>
+                </div>
             </div>
             <div>
                 <button type="button" onclick="newElement({{ list.id }})" class="addBtn">Add</button>
@@ -1230,8 +1255,8 @@
                         <br>
                         <label class="text-right">Start date: {{ list_item.created_on }}</label>
                         <label style="color:{{list_item.color}};">Due: {{ list_item.due_date }}</label>
-                        {% if list_item.is_done == 1 %}
-                            <p>It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</p>
+                        {% if list_item.is_done and list_item.finished_on %}
+                            <span class="completion-time">It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</span>
                         {% endif %}
                         <span class="clone"><i class="fi fi-rs-clone"></i></span>
                         <span class="close">x</span>
@@ -1529,7 +1554,7 @@ function markListItemByName() {
         var list_item_id = this.id.toString().substring(9);
         var is_done = this.checked;
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000;
+        var finish_on_timestamp = is_done? today.getTime() / 1000 : 0;
 
         if (is_done) {
             showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp);
@@ -1591,10 +1616,19 @@ function updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_t
         if (httpRequest.readyState === 4) {
             if (httpRequest.status === 200) {
                 console.log('Item updated successfully');
-                if (is_done) {
+                // Reload only when rating is submitted
+                if (rating !== null) {
+                    window.location.reload();
+                } else if (is_done) {
                     document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.add('done');
                 } else {
-                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.remove('done');
+                    var listItem = document.getElementById(`ListItem_${list_item_id}`).parentElement;
+                    listItem.classList.remove('done');
+                    // Remove the completion time span if it exists
+                    var completionTime = listItem.querySelector('.completion-time');
+                    if (completionTime) {
+                        completionTime.remove();
+                    }
                 }
             } else {
                 console.error('Failed to update the item. Please try again.');
@@ -1624,8 +1658,10 @@ function newElement(list_id, saved_to_database = true) {
     } else if (inputDue === '') {
         alert("You must enter due date!");
     } else {
+        // Clear input fields
         inputBox.value = "";
         
+        // Save to database if saved_to_database is true
         if (saved_to_database && inputValue !== '') {
             var httpRequest = new XMLHttpRequest();
             var today = new Date();
@@ -1634,7 +1670,33 @@ function newElement(list_id, saved_to_database = true) {
             httpRequest.onreadystatechange = function() {
                 if (this.readyState === 4) {
                     if (this.status === 200) {
-                        window.location.reload();  // Add immediate reload here
+                        var jsonResponse = JSON.parse(this.responseText);
+                        
+                        // Create checkbox
+                        var itemCheckBox = document.createElement("input");
+                        itemCheckBox.type = "checkbox";
+                        var itemValue = "ListItem_" + jsonResponse['item_id'];
+                        itemCheckBox.id = itemValue;
+                        itemCheckBox.name = itemValue;
+                        itemCheckBox.value = itemValue;
+                        itemCheckBox.addEventListener('change', markListItemByName);
+
+                        // Create label
+                        var itemLabel = document.createElement("label");
+                        itemLabel.htmlFor = itemValue;
+                        itemLabel.innerHTML = inputValue;
+                        li.append(itemCheckBox);
+                        li.append(itemLabel);
+
+                        // Create close button
+                        var span = document.createElement("SPAN");
+                        var txt = document.createTextNode("\u00D7");
+                        span.className = "close";
+                        span.onclick = removeListItem;
+                        span.appendChild(txt);
+                        li.appendChild(span);
+
+                        window.location.reload();
                     }
                 }
             };
