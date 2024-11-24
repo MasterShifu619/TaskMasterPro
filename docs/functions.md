@@ -354,7 +354,146 @@ endLine: 1800
 - `markListItemByName()`: Toggles item completion
 - `applyTemplate()`: Applies selected template
 
+#### applyTemplate(templateId)
+**Purpose**: Applies a template to create a new todo list
+**Parameters**:
+- templateId: ID of template to apply
+**Returns**: Redirects to /todo on success
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1574
+endLine: 1598
+```
 
+#### newElement(list_id, saved_to_database)
+**Purpose**: Creates new list item and saves to database
+**Parameters**: 
+- list_id: ID of list to add item to
+- saved_to_database: Boolean flag for persistence
+**Returns**: Creates new list item DOM element
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1449
+endLine: 1524
+```
+
+#### newTodoList()
+**Purpose**: Creates new todo list with tags and sharing
+**Features**:
+- Tag selection/creation
+- Shared user assignment
+- Database persistence
+- Page refresh on success
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1526
+endLine: 1573
+```
+
+#### toggleNewTagInput()
+**Purpose**: Shows/hides new tag input field
+**Features**:
+- Toggles visibility based on tag selection
+- Handles 'new' tag option
+**Code Reference**: 
+```
+html:todo/templates/todo/index.html
+startLine: 1469
+endLine: 1477
+```
+## /todo/templates/todo/index.html
+
+### JavaScript Functions
+
+#### saveAsTemplate(listId)
+**Purpose**: Saves existing list as a template
+**Parameters**:
+- listId: ID of list to save as template
+**Returns**: Redirects to /templates on success
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1076
+endLine: 1076
+```
+
+#### deleteList(listId) 
+**Purpose**: Deletes specified todo list
+**Parameters**:
+- listId: ID of list to delete
+**Returns**: Refreshes page on success
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1077
+endLine: 1077
+```
+
+#### markListItemByName()
+**Purpose**: Marks list item as complete with rating
+**Features**:
+- Updates completion status
+- Adds rating (1-5 stars)
+- Updates UI and database
+- Handles timestamp
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 472
+endLine: 474
+```
+
+#### showRatingDialog(itemId)
+**Purpose**: Shows rating dialog when completing item
+**Parameters**:
+- itemId: ID of completed item
+**Features**:
+- 5-star rating system
+- Rating persistence
+- Visual feedback
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 471
+endLine: 479
+```
+
+#### submitRating(itemId, rating)
+**Purpose**: Submits user rating for completed item
+**Parameters**:
+- itemId: ID of rated item
+- rating: Number 1-5
+**Features**:
+- Rating validation
+- Database update
+- UI feedback
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 480
+endLine: 496
+```
+#### cloneListItem()
+**Purpose**: Creates a copy of an existing task with customizable properties
+**Features**:
+- Extracts task properties from original item:
+  - Task name
+  - Due date
+  - Color tag
+  - List association
+- Creates popup dialog for editing clone properties
+- Handles color format conversion (RGB to Hex)
+- Saves cloned task to database
+
+**Code Reference**:
+```
+html:todo/templates/todo/index.html
+startLine: 1147
+endLine: 1238
+```
 #### User Authentication Section
 **Location**:
 ```
