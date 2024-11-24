@@ -11,15 +11,31 @@
 
 
     <style>
-         * {
+        :root {
+            --primary: #2557a7;      /* Bright Blue */
+            --primary-light: #3b82f6; /* Lighter Blue */
+            --secondary: #10b981;    /* Emerald Green */
+            --accent: #8b5cf6;       /* Purple */
+            --warning: #f59e0b;      /* Amber */
+            --error: #ef4444;        /* Red */
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-light: #ffffff;
+            --border: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: Calibri, Helvetica, sans-serif;
-            margin: 0; /* Remove default margin */
+            font-family: 'Inter', Calibri, Helvetica, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
         }
 
         ul {
@@ -29,107 +45,107 @@
 
         /* Topbar styles */
 .topbar {
-    background-color: #1458a0;
     position: fixed;
-    width: 100%;
     top: 0;
-    z-index: 100;
-    padding: 15px 20px;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0 2rem;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Styling for links in the topbar */
-.topbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 22px;
-    margin-right: 20px;
-    transition: color 0.3s ease;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-/* Links hover effect */
-.topbar a:hover {
-    color: #ccc;
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Flexbox for horizontal alignment */
-.topbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+.topbar .nav-left {
     display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.topbar .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.topbar .logo:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Navigation links */
+.topbar .nav-links {
+    display: flex;
+    gap: 1rem;
     align-items: center;
 }
 
-/* Style for each list item */
-.topbar ul li {
-    margin: 0 15px;
+.topbar a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    font-size: 1rem;  /* Adjusted from 22px */
 }
 
-/* Responsiveness: adjust padding and font size for smaller screens */
-@media (max-width: 768px) {
-    .topbar {
-        padding: 10px 15px;
-    }
-    
-    .topbar a {
-        font-size: 18px;
-        margin-right: 10px;
-    }
-    
-    .topbar ul li {
-        margin: 0 10px;
-    }
+.topbar a:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
-/* Further responsiveness for very small devices */
-@media (max-width: 480px) {
-    .topbar a {
-        font-size: 16px;
-        margin-right: 8px;
-    }
-    
-    .topbar ul li {
-        margin: 0 8px;
-    }
+.topbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0.5rem;
+    right: 0.5rem;
+    height: 2px;
+    background: var(--text-light);
+    border-radius: 2px;
 }
+
+/* Right side user section */
+.topbar .user-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.topbar .welcome-text {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.topbar .logout-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.topbar .logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
         h1 {
             text-align: center;
             margin-top: 30px;
             color: #34495e;
         }
         
-        .button-container {
-            text-align: center;
-            margin: 20px;
-            position: absolute;
-            top: 65px;
-            right: 420px;
-            z-index: 1000; /* Ensures the button is above other content */
-        }
-        
-        .button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        
-        .button:hover {
-            background-color: #2980b9;
-        }
-
         .summary {
             display: flex;
             justify-content: center;
@@ -254,67 +270,247 @@
             background-color: green; /* Change this to your desired color */
         }
 
+        /* Calendar Container */
         #calendar {
-      position: fixed;
-      right: 0;
-      top: 70px;
-      width: 400px;
-      height: 100%;
-      background-color: #f9f9f9;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-      overflow-y: auto;
-    }
-    .content {
-      margin-right: 420px; /* Adjust margin to avoid overlap with the fixed calendar */
-      padding: 40px;
-    }
+            position: fixed;
+            right: 0;
+            top: 64px;
+            width: 400px;
+            height: calc(100vh - 64px);
+            background: var(--surface);
+            padding: 1.5rem;
+            z-index: 10;
+            border-left: 1px solid var(--border);
+            box-shadow: -2px 0 4px rgba(0,0,0,0.05);
+        }
+
+        /* Calendar Container */
+        .fc {
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        /* Calendar Header */
+        .fc .fc-toolbar {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            margin-bottom: 1.5rem !important;
+        }
+
+        /* Calendar Title */
+        .fc .fc-toolbar-title {
+            font-size: 1.5rem !important;
+            font-weight: 600 !important;
+            color: var(--text-primary) !important;
+            margin: 0 !important;
+            text-align: center !important;
+        }
+
+        /* Controls Container */
+        .fc .fc-toolbar-chunk {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0.5rem !important;
+        }
+
+        /* Today Button and Navigation Container */
+        .fc .fc-toolbar-chunk:last-child {
+            display: flex !important;
+            gap: 0.5rem !important;
+        }
+
+        /* Today Button */
+        .fc .fc-today-button {
+            height: 36px !important;
+            padding: 0 16px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            font-family: inherit !important;
+        }
+
+        /* Navigation Buttons */
+        .fc .fc-button-group {
+            display: flex !important;
+            gap: 4px !important;
+        }
+
+        .fc .fc-button-group button {
+            height: 36px !important;
+            width: 36px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Calendar Grid */
+        .fc .fc-daygrid-day {
+            height: 100px !important;
+        }
+
+        .fc .fc-daygrid-day-frame {
+            padding: 4px !important;
+        }
+
+        .fc .fc-daygrid-day-number {
+            font-size: 0.875rem !important;
+            font-weight: 500 !important;
+            color: var(--text-primary) !important;
+        }
+
+        /* Header cells */
+        .fc .fc-col-header-cell {
+            padding: 8px !important;
+            font-weight: 600 !important;
+            color: var(--text-secondary) !important;
+        }
+
+        /* Hover states */
+        .fc .fc-button:hover {
+            background: var(--primary-light) !important;
+            opacity: 0.9 !important;
+        }
+
+        /* Today highlight */
+        .fc .fc-day-today {
+            background: rgba(37, 87, 167, 0.1) !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content {
+                margin-right: 350px;
+            }
+            
+            #calendar {
+                width: 350px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .content {
+                margin-right: 0;
+            }
+            
+            #calendar {
+                display: none;
+            }
+        }
+
+        /* Calendar Container */
+        .fc-header-toolbar.fc-toolbar {
+            padding: 1rem !important;
+        }
+
+        /* Toolbar Chunks */
+        .fc-toolbar-chunk {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        /* Today Button */
+        .fc-today-button.fc-button.fc-button-primary {
+            height: 36px !important;
+            padding: 0 16px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            text-transform: capitalize !important;
+        }
+
+        /* Button Group Container */
+        .fc-button-group {
+            display: flex !important;
+            gap: 4px !important;
+            margin-left: 8px !important;
+        }
+
+        /* Navigation Buttons */
+        .fc-prev-button.fc-button,
+        .fc-next-button.fc-button {
+            height: 36px !important;
+            width: 36px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Hover states */
+        .fc-button:hover {
+            background: var(--primary-light) !important;
+            opacity: 0.9 !important;
+        }
+
+        /* Disabled state */
+        .fc-button:disabled {
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* First, update the content div styling */
+        .content {
+            margin-right: 400px; /* Space for calendar */
+            padding: 20px;
+            margin-top: 64px; /* Space for topbar */
+            height: 100%;
+            overflow-y: auto; /* Enable scrolling */
+            position: relative; /* Change from fixed to relative */
+        }
 
     </style>
 </head>
 <body>
     <div class="topbar">
-        <ul>
-            <li><a href="/">To-Done</a></li>
-            <li><a class="tabs" href="/todo">Lists</a></li>
-            <li><a class="tabs" href="/templates">Templates</a></li>
-            <li><a class="tabs" href="/user_analytics">User-Analytics</a></li>
-        </ul>
-		<ul style="float: right;">
-		{% if user.is_authenticated %}
-            <li><a href="#">Welcome, {{user.username}}</a></li>
-		  <li><a class="tabs" href="/logout">Logout</a></li>
-		{% else %}
-		  <li><a class="tabs" href="/login">Login</a></li>
-		{% endif %}
-		</ul>
+        <div class="nav-left">
+            <a href="/" class="logo">To-Done</a>
+            <div class="nav-links">
+                <a href="/todo">Lists</a>
+                <a href="/templates">Templates</a>
+                <a href="/user_analytics" class="active">User-Analytics</a>
+            </div>
+        </div>
+        <div class="user-section">
+            {% if user.is_authenticated %}
+                <span class="welcome-text">Welcome, {{user.username}}</span>
+                <a href="/logout" class="logout-btn">Logout</a>
+            {% else %}
+                <a href="/login" class="logout-btn">Login</a>
+            {% endif %}
+        </div>
     </div>
 
-    <div id="calendar">
-        <!-- Calendar content -->
-    </div>
+    <div id="calendar"></div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
-            
-            // Log to check if the element is found
-            console.log(calendarEl);
-
-            // Parse JSON safely from context
-            var calendarEvents;
-            try {
-                calendarEvents = JSON.parse('{{ calendar_events|escapejs }}');
-                console.log(calendarEvents); // Log the events to verify
-            } catch (e) {
-                console.error('Error parsing calendar events:', e);
-                return;
-            }
-
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: calendarEvents
+                headerToolbar: {
+                    left: 'title',
+                    right: 'today prev,next'
+                },
+                height: 'auto',
+                events: JSON.parse('{{ calendar_events|escapejs }}'),
+                buttonText: {
+                    today: 'Today'
+                },
+                dayMaxEvents: true,
+                firstDay: 1
             });
-
             calendar.render();
         });
     </script>
@@ -322,10 +518,6 @@
     <div class="content">
     <h1 style="padding-top: 5px;">User Analytics</h1>
 
-    <div class="button-container">
-        <a href="/todo" class="button">Back</a>
-    </div>    
-    
     <div class="summary">
         <p><strong>Due Soon Count:</strong><br>{{ due_soon_count }}</p>
         <p><strong>Overdue Count:</strong><br>{{ overdue_count }}</p>
