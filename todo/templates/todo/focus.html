@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    
+    <style>
+        
+        /* Monday Theme */
+        .monday {
+            background-color: #cce7ff;
+            color: #1a1aff;
+        }
+
+        /* Tuesday Theme */
+        .tuesday {
+            background-color: #ccffd9;
+            color: #006600;
+        }
+
+        /* Wednesday Theme */
+        .wednesday {
+            background-color: #ffffcc;
+            color: #b8860b;
+        }
+
+        /* Thursday Theme */
+        .thursday {
+            background-color: #f5e6cc;
+            color: #d2691e;
+        }
+
+        /* Friday Theme */
+        .friday {
+            background-color: #e6ccff;
+            color: #6a0dad;
+        }
+
+        /* Saturday Theme */
+        .saturday {
+            background-color: #ffe6e6;
+            color: #ff4500;
+        }
+
+        /* Sunday Theme */
+        .sunday {
+            background-color: #6a0dad;
+            color: #8b0000;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, Helvetica, sans-serif;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        /* Topbar styles */
+.topbar {
+    background-color: #1458a0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for links in the topbar */
+.topbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 22px;
+    margin-right: 20px;
+    transition: color 0.3s ease;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* Links hover effect */
+.topbar a:hover {
+    color: #ccc;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Flexbox for horizontal alignment */
+.topbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* Style for each list item */
+.topbar ul li {
+    margin: 0 15px;
+}
+
+/* Responsiveness: adjust padding and font size for smaller screens */
+@media (max-width: 768px) {
+    .topbar {
+        padding: 10px 15px;
+    }
+    
+    .topbar a {
+        font-size: 18px;
+        margin-right: 10px;
+    }
+    
+    .topbar ul li {
+        margin: 0 10px;
+    }
+}
+
+/* Further responsiveness for very small devices */
+@media (max-width: 480px) {
+    .topbar a {
+        font-size: 16px;
+        margin-right: 8px;
+    }
+    
+    .topbar ul li {
+        margin: 0 8px;
+    }
+}
+h1 {
+    color: #333; /* Dark gray for better contrast */
+}
+.centred {
+    text-align: center; /* Center the text */
+    margin: 20px 0;    /* Optional: Add some margin for spacing */
+}
+.card-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Individual Card Styling */
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Adds a hover effect */
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Style for the "No tags found" message */
+        .no-tags {
+            font-size: 18px;
+            color: #666;
+        }
+        #calendar {
+            position: fixed;
+            right: 0;
+            top: 70px;
+            width: 400px;
+            height: 100%;
+            background-color: #f9f9f9;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            }
+
+    </style>
+    <div id="calendar">
+        <!-- Calendar content -->
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            
+            // Log to check if the element is found
+            console.log(calendarEl);
+
+            // Parse JSON safely from context
+            var calendarEvents;
+            try {
+                calendarEvents = JSON.parse('{{ calendar_events|escapejs }}');
+                console.log(calendarEvents); // Log the events to verify
+            } catch (e) {
+                console.error('Error parsing calendar events:', e);
+                return;
+            }
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: calendarEvents
+            });
+
+            calendar.render();
+        });
+
+      </script>
+        <script>
+        function applyTheme() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const currentDayIndex = new Date().getDay(); // Get the current day index
+            const currentDayName = days[currentDayIndex];
+            const dayClass = days[currentDayIndex].toLowerCase();
+
+            // Apply the theme class to the body
+            document.body.classList.add(dayClass);
+            // Add a welcome message
+            if (currentDayIndex === 0) { // Sunday
+                message = "It's Planning Sunday!";
+            } else if (currentDayIndex === 1) { // Monday
+                message = "It's Refreshing Monday!";
+            } else if (currentDayIndex === 2) { // Tuesday
+                message = "It's Learning Tuesday!";
+            } else if (currentDayIndex === 3) { // Wednesday
+                message = "It's Wellness Wednesday!";
+            } else if (currentDayIndex === 4) { // Thursday
+                message = "It's Collaborative Thursday!";
+            } else if (currentDayIndex === 5) { // Friday
+                message = "It's Fitness Friday!";
+            } else if (currentDayIndex === 6) { // Saturday
+                message = "It's Self-Care Saturday!";
+        }
+
+           // Create the task container
+const taskContainer = document.createElement('div');
+
+// Set the inner HTML with the message
+taskContainer.innerHTML = `<h1 class="centred"><br><br>${message}</h1>`;
+
+// Append the task container to the body at the top
+document.body.insertBefore(taskContainer, document.body.firstChild);
+        }
+
+        // Run the function when the page loads
+        window.onload = applyTheme;
+    </script>
+</head>
+<body>
+    <div class="topbar">
+        <ul>
+            <li><a href="/">To-Done</a></li>
+            <li><a class="tabs" href="/todo">Lists</a></li>
+            <li><a class="tabs" href="/templates">Templates</a></li>
+            <li><a class="tabs" href="/user_analytics">User-Analytics</a></li>
+            <li><a class="tabs" href="/focus">Daily Focus</a></li>
+        </ul>
+    </div>
+    
+    <div></div>
+        <h1>Your Lists for Today!</h1>
+        <div class="card-container">
+            {% if x %}
+                {% for task in x %}
+                    <div class="card">
+                        <h3>{{ task.title_text }}</h3>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No tasks for today!</p>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+        
+
+    
+</body>
+</html>
