@@ -31,56 +31,27 @@ def index(request, list_id=0):
     if not request.user.is_authenticated:
         return redirect("/login")
     
-    shared_list = []
-
     if list_id != 0:
-        # latest_lists = List.objects.filter(id=list_id, user_id_id=request.user.id)
         latest_lists = List.objects.filter(id=list_id)
-
     else:
         latest_lists = List.objects.filter(user_id_id=request.user.id).order_by('-updated_on')
 
-        try:
-            query_list_str = SharedList.objects.get(user_id=request.user.id).shared_list_id
-        except SharedList.DoesNotExist:
-            query_list_str = None
-        
-        if query_list_str != None:
-            shared_list_id = query_list_str.split(" ")
-            shared_list_id.remove("")
-
-            latest_lists = list(latest_lists)
-
-            for list_id in shared_list_id:
-            
-                try:
-                    query_list = List.objects.get(id=int(list_id))
-                except List.DoesNotExist:
-                    query_list = None
-
-                if query_list:
-                    shared_list.append(query_list)
-        
+    # Get ALL list items and let the template handle filtering
     latest_list_items = ListItem.objects.order_by('list_id')
+    
     saved_templates = Template.objects.filter(user_id_id=request.user.id).order_by('created_on')
     list_tags = ListTags.objects.filter(user_id=request.user.id).order_by('created_on')
+    shared_lists = SharedList.objects.filter(user=request.user)
     
-    # change color when is or over due
-    cur_date = datetime.date.today()
-    for list_item in latest_list_items:       
-        list_item.color = "#FF0000" if cur_date > list_item.due_date else "#000000"
-    
-    # Filter ListItems by lists belonging to the logged-in user
-    user = request.user
-    user_lists = List.objects.filter(user_id=user)
+    # Calendar events code...
+    user_lists = List.objects.filter(user_id=request.user)
     user_list_items = ListItem.objects.filter(list__in=user_lists)
-
-    # Calendar events based on user's tasks with a due date
+    
     calendar_events = [
         {
             "title": item.item_name,
             "start": item.due_date.strftime('%Y-%m-%d'),
-            "end": item.due_date.strftime('%Y-%m-%d')  # Optional end date
+            "end": item.due_date.strftime('%Y-%m-%d')
         }
         for item in user_list_items if item.due_date
     ]
@@ -90,7 +61,7 @@ def index(request, list_id=0):
         'latest_list_items': latest_list_items,
         'templates': saved_templates,
         'list_tags': list_tags,
-        'shared_list': shared_list,
+        'shared_list': shared_lists,
         'calendar_events': mark_safe(json.dumps(calendar_events))
     }
     return render(request, 'todo/index.html', context)
@@ -99,26 +70,31 @@ def index(request, list_id=0):
 def todo_from_template(request):
     if not request.user.is_authenticated:
         return redirect("/login")
+    
     template_id = request.POST['template']
     fetched_template = get_object_or_404(Template, pk=template_id)
-    todo = List.objects.create(
+    
+    current_time = timezone.now()
+    new_list = List.objects.create(
         title_text=fetched_template.title_text,
-        created_on=timezone.now(),
-        updated_on=timezone.now(),
+        created_on=current_time,
+        updated_on=current_time,
         user_id_id=request.user.id
     )
+    
     for template_item in fetched_template.templateitem_set.all():
         ListItem.objects.create(
             item_name=template_item.item_text,
             item_text="",
-            created_on=timezone.now(),
-            finished_on=timezone.now(),
-            due_date=timezone.now(),
+            created_on=current_time,
+            finished_on=current_time,
+            due_date=current_time,
             tag_color=template_item.tag_color,
-            list=todo,
+            list_id=new_list.id,
             is_done=False,
         )
-    return redirect("/todo")
+    
+    return redirect('/todo')
 
 
 # Create a new Template from existing to-do list and redirect to the templates list page

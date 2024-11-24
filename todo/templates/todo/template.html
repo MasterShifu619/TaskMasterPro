@@ -466,7 +466,7 @@
                     <li>{{ template_item }}</li>
                 {% endfor %}
                 <div class="template-buttons">
-                    <form action="/todo/new-from-template" method="post" style="margin: 0;">
+                    <form action="{% url 'todo:todo_from_template' %}" method="post" style="margin: 0;">
                         {% csrf_token %}
                         <input type="hidden" name="template" id="template-{{ template.id }}" value="{{ template.id }}">
                         <button class="add-template-button">Use This Template</button>
