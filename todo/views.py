@@ -25,6 +25,8 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 
+from .task_suggester import TaskSuggester
+
 
 # Render the home page with users' to-do lists
 def index(request, list_id=0):
@@ -648,6 +650,13 @@ def user_analytics(request):
         for item in user_list_items if item.due_date
     ]
 
+    # Get the user's lists
+    user_lists = List.objects.filter(user_id=request.user)
+    
+    # Create task suggester instance
+    task_suggester = TaskSuggester(user_lists)
+    suggested_tasks = task_suggester.get_suggested_tasks()
+    
     context = {
         'list_items': user_list_items,
         'daily_data': daily_data,
@@ -665,7 +674,8 @@ def user_analytics(request):
         'ratings_2': ratings_2,
         'ratings_1': ratings_1,
         'calendar_events': mark_safe(json.dumps(calendar_events)),
-        'due_soon_items': due_soon_items  # Add due soon items for alert
+        'due_soon_items': due_soon_items,
+        'suggested_tasks': suggested_tasks,  # Add this line
     }
 
     return render(request, 'todo/user_analytics.html', context)
