@@ -250,6 +250,7 @@ def markListItem(request):
         list_id = body['list_id']
         list_item_name = body['list_item_name']
         list_item_id = body['list_item_id']
+        rating = body['rating']
         # remove the first " and last "
         list_item_is_done = True
         is_done_str = str(body['is_done'])
@@ -263,6 +264,7 @@ def markListItem(request):
                 query_list = List.objects.get(id=list_id)
                 query_item = ListItem.objects.get(id=list_item_id)
                 query_item.is_done = list_item_is_done
+                query_item.rating = rating
                 query_item.finished_on = finished_on_time
                 query_item.save()
                 # Sending an success response
@@ -566,6 +568,10 @@ def user_analytics(request):
     # Due soon tasks for alert
     due_soon_items = user_list_items.filter(due_date=tomorrow, is_done=False)
 
+    # Check number of ratings
+    ratings_3 = user_list_items.filter(rating = 3, is_done=True).count()
+    ratings_2 = user_list_items.filter(rating = 2, is_done=True).count()
+    ratings_1 = user_list_items.filter(rating = 1, is_done=True).count()
     # Aggregations for daily, weekly, and monthly completions
     daily_completions = user_list_items.filter(is_done=True).annotate(date=TruncDay('finished_on')).values('date').annotate(count=Count('id')).order_by('date')
     weekly_completions = user_list_items.filter(is_done=True).annotate(week=TruncWeek('finished_on')).values('week').annotate(count=Count('id')).order_by('week')
@@ -655,6 +661,9 @@ def user_analytics(request):
         'avg_completion_time_hours': avg_completion_time_hours,
         'busy_days': busy_days,
         'today': today,
+        'ratings_3': ratings_3,
+        'ratings_2': ratings_2,
+        'ratings_1': ratings_1,
         'calendar_events': mark_safe(json.dumps(calendar_events)),
         'due_soon_items': due_soon_items  # Add due soon items for alert
     }

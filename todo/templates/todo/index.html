@@ -1262,6 +1262,11 @@ for (i = 0; i < clone.length; i++) {
   clone[i].onclick = cloneListItem
 }
 
+function convertToISODate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
+
 function cloneListItem() {
 
     var listItem = this.parentElement;
@@ -1269,7 +1274,15 @@ function cloneListItem() {
     var listItemId = listItem.getElementsByTagName("input")[0].id.toString().substring(9);
     var itemName = listItem.querySelector('label').textContent;
     var dueDate = listItem.querySelector('label[style^="color"]').textContent.split(': ')[1];
+    var newDueDate = convertToISODate(dueDate);
     var color = listItem.style.backgroundColor;
+    const [r, g, b] = color.slice(4, -1).split(',').map(Number);
+    
+    // Convert to hex and pad with zeros if necessary
+    newColor =  "#" + [r, g, b].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }).join('');
 
     // Create popup container
     var popupContainer = document.createElement('div');
@@ -1278,30 +1291,23 @@ function cloneListItem() {
 
     // Popup content
     popupContainer.innerHTML = `
-        <div class="list-card">
-            <div class="card-header">
-                <h3>Clone Task</h3>
-                <span class="popup-close-btn">&times;</span>
+        <span class="popup-close-btn">&times;</span>
+        <h3>Clone Task</h3>
+        <form id="cloneForm">
+            <div class="form-group">
+                <label for="cloneItemName">Task Name:</label>
+                <input type="text" id="cloneItemName" value="${itemName}">
             </div>
-            <form id="cloneForm">
-                <div class="form-group">
-                    <label>Task Name:</label>
-                    <input type="text" id="cloneItemName" value="${itemName}">
-                </div>
-                
-                <div class="form-group">
-                    <label>Due Date:</label>
-                    <input type="date" id="cloneDueDate" value="${dueDate}">
-                </div>
-                
-                <div class="form-group">
-                    <label>Color Tag:</label>
-                    <input type="color" id="cloneColor" value="#ffffff">
-                </div>
-                
-                <button type="submit" class="addBtn">Clone Task</button>
-            </form>
-        </div>
+            <div class="form-group">
+                <label for="cloneDueDate">Due Date:</label>
+                <input type="date" id="cloneDueDate" value="${newDueDate}">
+            </div>
+            <div class="form-group">
+                <label for="cloneColor">Color Tag:</label>
+                <input type="color" id="cloneColor" value="${newColor}">
+            </div>
+            <button type="submit" class="addBtn">Clone Task</button>
+        </form>
     `;
     // Insert popup after the list item
     listItem.insertAdjacentElement('afterend', popupContainer);
@@ -1482,39 +1488,85 @@ var listItemsCheckBoxes = document.querySelectorAll("input[type=checkbox]");
     });
 
 
-// mark item as done or undo it
 function markListItemByName() {
     if (this.parentElement.tagName === 'LI') {
-        // Toggle the "done" class for the list item
-        this.parentElement.classList.toggle('done');
-        
-        // Extract necessary information
         var item_name = this.nextElementSibling.innerHTML;
-        var list_id = this.parentElement.parentElement.id.toString().substring(5); // Extract list ID
-        var list_item_id = this.id.toString().substring(9); // Extract list item ID
-        var is_done = this.parentElement.classList.contains('done'); // Check if the item is marked as done
+        var list_id = this.parentElement.parentElement.id.toString().substring(5);
+        var list_item_id = this.id.toString().substring(9);
+        var is_done = this.checked;
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000; // Get the current timestamp
-        
-        // Create a new XMLHttpRequest object
-        var httpRequest = new XMLHttpRequest();
-        
-        // Set up the POST request to update the item
-        httpRequest.open('POST', '/markListItem', true);
-        httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        
-        // Prepare the parameters to be sent in the request body
-        var params = {
-            "list_id": list_id,
-            "list_item_name": item_name,
-            "is_done": is_done,
-            "list_item_id": list_item_id,
-            "finish_on": finish_on_timestamp
-        };
-        
-        // Send the request with the parameters as JSON
-        httpRequest.send(JSON.stringify(params));
+        var finish_on_timestamp = today.getTime() / 1000;
+
+        if (is_done) {
+            showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp);
+        } else {
+            updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp);
+        }
     }
+}
+
+function showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp) {
+    var popupContainer = document.createElement('div');
+    popupContainer.className = 'rating popup-container';
+    popupContainer.style.display = 'block';
+    popupContainer.style.marginTop = '25px'
+
+    popupContainer.innerHTML = `
+        <span class="popup-close-btn">&times;</span>
+        <h3>Rate Task: ${item_name}</h3>
+        <div class="emoji-rating">
+            <button class="emoji-btn" data-rating="3">😃</button>
+            <button class="emoji-btn" data-rating="2">😐</button>
+            <button class="emoji-btn" data-rating="1">😞</button>
+        </div>
+    `;
+
+    document.body.appendChild(popupContainer);
+
+    popupContainer.querySelector('.popup-close-btn').onclick = function() {
+        popupContainer.remove();
+    };
+
+    var emojiButtons = popupContainer.querySelectorAll('.emoji-btn');
+    emojiButtons.forEach(function(button) {
+        button.onclick = function() {
+            var rating = this.getAttribute('data-rating');
+            updateTaskStatus(list_id, item_name, list_item_id, true, finish_on_timestamp, rating);
+            popupContainer.remove();
+        };
+    });
+}
+
+function updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp, rating = null) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', '/markListItem', true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    var params = {
+        "list_id": list_id,
+        "list_item_name": item_name,
+        "is_done": is_done,
+        "list_item_id": list_item_id,
+        "finish_on": finish_on_timestamp,
+        "rating": rating
+    };
+
+    httpRequest.send(JSON.stringify(params));
+
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState === 4) {
+            if (httpRequest.status === 200) {
+                console.log('Item updated successfully');
+                if (is_done) {
+                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.add('done');
+                } else {
+                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.remove('done');
+                }
+            } else {
+                console.error('Failed to update the item. Please try again.');
+            }
+        }
+    };
 }
 
 // Use Array.forEach to add an event listener to each checkbox.
