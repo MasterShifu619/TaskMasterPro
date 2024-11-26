@@ -353,3 +353,131 @@ class UserAnalyticsTest(TestCase):
         ]
         self.assertEqual(calendar_events, expected_events)
 
+    def test_rating_chart_data_integrity(self):
+        response = self.client.get(reverse('todo:user_analytics'))
+        context = response.context
+        total_ratings = context['ratings_1'] + context['ratings_2'] + context['ratings_3']
+        self.assertEqual(total_ratings, ListItem.objects.filter(is_done=True).count())
+
+    def test_rating_chart_all_satisfactory(self):
+        ListItem.objects.update(rating=3)
+        response = self.client.get(reverse('todo:user_analytics'))
+        context = response.context
+        self.assertEqual(context['ratings_3'], ListItem.objects.filter(is_done=True).count())
+        self.assertEqual(context['ratings_1'], 0)
+        self.assertEqual(context['ratings_2'], 0)
+
+    def test_rating_chart_all_neutral(self):
+        ListItem.objects.update(rating=2)
+        response = self.client.get(reverse('todo:user_analytics'))
+        context = response.context
+        self.assertEqual(context['ratings_3'], 0)
+        self.assertEqual(context['ratings_2'], ListItem.objects.filter(is_done=True).count())
+        self.assertEqual(context['ratings_1'], 0)
+
+    def test_rating_chart_all_unsatisfactory(self):
+        ListItem.objects.update(rating=1)
+        response = self.client.get(reverse('todo:user_analytics'))
+        context = response.context
+        self.assertEqual(context['ratings_3'], 0)
+        self.assertEqual(context['ratings_2'], 0)
+        self.assertEqual(context['ratings_1'], ListItem.objects.filter(is_done=True).count())
+
+    def test_rating_chart_no_ratings(self):
+        ListItem.objects.update(rating=0)
+        response = self.client.get(reverse('todo:user_analytics'))
+        context = response.context
+        self.assertEqual(context['ratings_1'], 0)
+        self.assertEqual(context['ratings_2'], 0)
+        self.assertEqual(context['ratings_3'], 0)
+
+    def test_average_completion_time(self):
+        now = timezone.now()
+        ListItem.objects.all().delete()
+    
+        # Create tasks with known creation and completion times
+        task1 = ListItem.objects.create(
+            list=self.list,
+            item_name="Task 1",
+            due_date=now.date() + timedelta(days=5),
+            created_on=now - timedelta(hours=5),
+            finished_on=now,
+            is_done=True
+        )
+        task2 = ListItem.objects.create(
+            list=self.list,
+            item_name="Task 2",
+            due_date=now.date() + timedelta(days=5),
+            created_on=now - timedelta(hours=3),
+            finished_on=now,
+            is_done=True
+        )
+    
+        response = self.client.get(reverse('todo:user_analytics'))
+        avg_completion_time = response.context['avg_completion_time_hours']
+    
+        # Expected average: (5 + 3) / 2 = 4 hours
+        self.assertAlmostEqual(avg_completion_time, 4.0, places=1)
+
+    def test_task_suggestion_algorithm(self):
+        now = timezone.now()
+        ListItem.objects.all().delete()
+        
+        # Create tasks with various priorities and due dates
+        urgent_task = ListItem.objects.create(
+            list=self.list,
+            created_on=now,
+            item_name="Urgent Task",
+            due_date=now.date(),
+            is_done=False
+        )
+        important_task = ListItem.objects.create(
+            list=self.list,
+            item_name="Important Task",
+            created_on=now,
+            due_date=now.date() + timedelta(days=2),
+            is_done=False
+        )
+        normal_task = ListItem.objects.create(
+            list=self.list,
+            item_name="Normal Task",
+            created_on=now,
+            due_date=now.date() + timedelta(days=5),
+            is_done=False
+        )
+        
+        response = self.client.get(reverse('todo:user_analytics'))
+        suggested_tasks = response.context['suggested_tasks']
+        
+        # Assert that tasks are suggested in the correct order
+        self.assertEqual(suggested_tasks[0][0], urgent_task)
+        self.assertEqual(suggested_tasks[1][0], important_task)
+        self.assertEqual(suggested_tasks[2][0], normal_task)
+
+    def test_chart_data_generation(self):
+        now = timezone.now()
+        ListItem.objects.all().delete()
+        
+        # Create tasks completed on various dates
+        for i in range(7):
+            ListItem.objects.create(
+                list=self.list,
+                item_name=f"Task {i+1}",
+                created_on=now - timedelta(days=i),
+                finished_on=now - timedelta(days=i),
+                due_date=now.date() + timedelta(days=8),
+                is_done=True
+            )
+        
+        response = self.client.get(reverse('todo:user_analytics'))
+        daily_data = response.context['daily_data']
+        weekly_data = response.context['weekly_data']
+        monthly_data = response.context['monthly_data']
+        
+        # Assert that the data is generated correctly
+        self.assertEqual(len(daily_data['labels']), 7)
+        self.assertEqual(len(daily_data['counts']), 7)
+        self.assertEqual(len(weekly_data['labels']), 2)
+        self.assertEqual(weekly_data['counts'][0], 5)
+        self.assertEqual(len(monthly_data['labels']), 1)
+        self.assertEqual(monthly_data['counts'][0], 7)
