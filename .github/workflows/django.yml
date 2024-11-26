@@ -3,8 +3,7 @@ name: Django CI
 on:
   push:
     branches: 
-      - "main"
-      - "harshvardhan"
+      - "release-v2.0.0"
   pull_request:
     branches: [ "main" ]
 
