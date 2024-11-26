@@ -697,7 +697,7 @@ def focus(request, list_id=0):
         user_lists = List.objects.filter(user_id=user_id)
         #print(user_lists)
         user_list_items = ListItem.objects.filter(list__in=user_lists)
-        
+        print(user_list_items)
         calendar_events = [
         {
             "title": item.item_name,
@@ -708,31 +708,29 @@ def focus(request, list_id=0):
         title = []
         for item in user_list_items:
             title.append(item.item_name)
-        print(today_num)
         if today_num == 0:
-            x = List.objects.filter(user_id=user_id, list_tag='Refreshing').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Refreshing').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 1:
-            x = List.objects.filter(user_id=user_id, list_tag='Learning').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Learning').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 2:
-            x = List.objects.filter(user_id=user_id, list_tag='Wellness').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Wellness').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 3:
-            x = List.objects.filter(user_id=user_id, list_tag='Meeting').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Meeting').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 4:
-            x = List.objects.filter(user_id=user_id, list_tag='Fitness').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Fitness').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 5:
-            x = List.objects.filter(user_id=user_id, list_tag='Self Care').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Self Care').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         elif today_num == 6:
-            x = List.objects.filter(user_id=user_id, list_tag='Planning').values('title_text', 'list_tag')
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Planning').values('title_text', 'list_tag')
             return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
         else:
             pass
-
 
 from celery import shared_task
 from django.core.mail import send_mail
