@@ -12,24 +12,32 @@ Django 4.1
 ### 1. Install Python and Django
 Download and install Python 3.8.0 or higher from the official Python website.
 Install Django 4.1 using pip:
-bash
+
+```
 pip install django==4.1
+```
 
 ### 2. Clone the repository
 Clone the TaskMasterPro repository using Git:
-bash
+
+```
 git clone https://github.com/MasterShifu619/TaskMasterPro.git
+```
 
 ### 3. Set up the project
 Navigate to the project directory and run migrations:
-bash
+
+```
 cd TaskMasterPro
 python manage.py migrate
+```
 
 ### 4. Start the development server
 Launch the Django development server on port 8080:
-bash
+
+```
 python manage.py runserver 8080
+```
 
 ### 5. Access TaskMasterPro
 Open your web browser and visit http://127.0.0.1:8080 to start using TaskMasterPro.
