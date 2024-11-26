@@ -17,4 +17,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --fail-under=2 src
+        pylint --fail-under=2 todo
