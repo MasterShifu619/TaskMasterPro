@@ -45,7 +45,8 @@ Open your web browser and visit http://127.0.0.1:8080 to start using TaskMasterP
 ## Troubleshooting
 
 ### If you encounter any issues during setup, please check the following:
-Ensure you have the correct versions of Python and Django installed
-Verify that you're in the correct project directory when running commands
-Check if the port 8080 is available on your system
+#### Ensure you have the correct versions of Python and Django installed.
+#### Verify that you're in the correct project directory when running commands.
+#### Check if the port 8080 is available on your system.
+
 For further assistance, please open an issue on the project's GitHub repository.
