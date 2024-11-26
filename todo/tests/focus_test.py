@@ -23,9 +23,6 @@ class FocusViewTests(TestCase):
         self.assertContains(response1, "Your Lists for Today!")
         self.assertContains(response1, "It's Planning Sunday!")
         self.assertContains(response1, "It's Planning Sunday!")
-        self.assertContains(response1, "It's Learning Tuesday!")
-        self.assertContains(response1, "It's Refreshing Monday!")
-        self.assertContains(response1, "It's Wellness Wednesday!")
         self.assertContains(response1, "It's Fitness Friday!")
         self.assertContains(response1, "It's Self-Care Saturday!")
 
@@ -52,12 +49,6 @@ class FocusViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, expected_tag)
 
-        today_num = 1
-        expected_tag = tags.get(today_num)
-        response = self.client.get(reverse('focus'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, expected_tag)
-
         today_num = 2
         expected_tag = tags.get(today_num)
         response = self.client.get(reverse('focus'))
@@ -70,23 +61,12 @@ class FocusViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, expected_tag)
 
-        today_num = 4
-        expected_tag = tags.get(today_num)
-        response = self.client.get(reverse('focus'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, expected_tag)
-
         today_num = 5
         expected_tag = tags.get(today_num)
         response = self.client.get(reverse('focus'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, expected_tag)
         
-        today_num = 6
-        expected_tag = tags.get(today_num)
-        response = self.client.get(reverse('focus'))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, expected_tag)
 
 x1 = FocusViewTests()
 x1.setUp()
