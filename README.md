@@ -19,7 +19,7 @@ TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application de
 
 ### Watch this video to know more about TaskMasterPro 2.0
 
-ADD LINK TO VIDEO HERE
+<img src="assets/TaskMasterPro_AnimatedPitch.mp4" width="1200" height="500" />
 
 ### Watch below video to know more about the original TaskMasterPro
 
@@ -118,10 +118,6 @@ Add new features here
     <img src="img/analytics.gif" width="500" height="250" />
 </p>
 
-## Check out our Videos!
-<p float="middle">
-    <img src="assets/TaskMasterPro_AnimatedPitch" width="500" height="250"/>
-</p>
 ## Want to Contribute?
 
 Interested in contributing? See our [Contributing Guide](CONTRIBUTING.md) for ways to get started.
