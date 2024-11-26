@@ -19,8 +19,7 @@ TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application de
 
 ### Watch this video to know more about TaskMasterPro 2.0
 
-https://drive.google.com/file/d/16slSsPs1yCkgR6VO1seG3Fy4EdmboAFv/view?usp=sharing
-
+ADD LINK TO VIDEO HERE
 
 ### Watch below video to know more about the original TaskMasterPro
 
@@ -33,7 +32,6 @@ https://drive.google.com/file/d/16slSsPs1yCkgR6VO1seG3Fy4EdmboAFv/view?usp=shari
  * [New Features](#new-features)
  * [Upcoming Features](#upcoming-features)
  * [Quick Start](#quick-start)
- * [Documentation](#documentation)
  * [Want to contribute?](#want-to-contribute)
  * [License](#license)
  * [Developers](#developers-new-version)
@@ -58,29 +56,32 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
  * *Shared List*: Collaborate with others by sharing specific lists for joint task management.
  * *Due Date and Color Tagging*: Assign due dates and color-coded tags to tasks for better organization and urgency recognition.
  * *Tag-based Grouping*: Use customizable tags to group and organize tasks, projects, or lists.
+ * *User Productivity Analysis*: Get insights into your productivity trends over time.
+ * *Task Analysis*: View detailed analytics on task completion, pending tasks, and more.
+ * *Customized Color Tags*: Personalize tags for a more visual, engaging to-do list experience.
+ * *Due Date Alerting Mechanism*: Receive timely alerts for upcoming or overdue tasks.
+ * *Advanced Scheduler*: Plan tasks with complex scheduling options for improved time management.
+ * *Calendar Dashboard*: Visualize tasks and deadlines on a calendar to track deadlines and progress effectively.
 
 ## New Features
-
-* *User Productivity Analysis*: Get insights into your productivity trends over time.
-* *Task Analysis*: View detailed analytics on task completion, pending tasks, and more.
-* *Customized Color Tags*: Personalize tags for a more visual, engaging to-do list experience.
-* *Due Date Alerting Mechanism*: Receive timely alerts for upcoming or overdue tasks.
-* *Advanced Scheduler*: Plan tasks with complex scheduling options for improved time management.
-* *Calendar Dashboard*: Visualize tasks and deadlines on a calendar to track deadlines and progress effectively.
-
-## Upcoming Features
 * *Task Cloning for Repeatable Routines*: Add a "Clone Task" option for quick duplication of recurring tasks with similar settings.
 * *Quick Task Ratings*: Prompt users to rate tasks on importance, ease, and satisfaction after completion for personalized insights.
 * *AI-Driven Next Task Suggestion*: Recommend the next best task based on urgency, priority, and user preferences.
 * *Daily Focus Theme*: Set daily themes (e.g., "Wellness Wednesdays") to help users concentrate on specific task types.
 * *Gamified Achievements and Badges*: Reward users with badges like "Task Streaker" and "Deadline Conqueror" for motivational milestones.
+
+
+## Upcoming Features
+
+Add new features here
+
 ## Quick Start
 
  * [Download](https://www.python.org/downloads/release/python-380/) and install Python 3.8.0 or higher.
  * [Install](https://docs.djangoproject.com/en/4.1/topics/install/) Django 4.1.
  * Clone the repository:
     bash
-    $ git clone https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro.git
+    $ git clone https://github.com/MasterShifu619/TaskMasterPro.git
     
  * Run migrations:
     bash
@@ -91,9 +92,6 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
     $ python manage.py runserver 8080
     
  * Open your browser at http://127.0.0.1:8080 to explore TaskMasterPro.
-
-## Documentation
-Explore the full documentation [here](https://drive.google.com/file/d/1dTMPA3Mq1Ou7XR9jDfKYhGOni98FMxIN/view) for details on installation, usage, and API options.
 
 ## Features
 
@@ -122,26 +120,25 @@ Explore the full documentation [here](https://drive.google.com/file/d/1dTMPA3Mq1
 
 ## Want to Contribute?
 
-Interested in contributing? See our [Contributing Guide](CONTRIBUTING.md) for ways to get started. Not sure where to start? Check out our [good first issues](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/issues/4) or open an [Issue](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/issues) to let us know your ideas or report any bugs.
+Interested in contributing? See our [Contributing Guide](CONTRIBUTING.md) for ways to get started.
 
 ## License
 
-This project is licensed under the MIT License. For more details, view the [LICENSE](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/blob/main/LICENSE) file.
+This project is licensed under the MIT License. For more details, view the [LICENSE](https://github.com/MasterShifu619/TaskMasterPro/blob/release-v2.0.0/LICENSE.md) file.
 
 ## Developers (New Version)
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/dineshkannan010"><img src="https://avatars.githubusercontent.com/u/112150278?v=4" width="100px;" alt=""/><br /><sub><b>Dinesh Kannan</b></sub></a></td>
-    <td align="center"><a href="https://github.com/Harshvardhan14"><img src="https://avatars.githubusercontent.com/u/23623764?v=4" width="100px;" alt=""/><br /><sub><b>Harshvardhan Patil</b></sub></a><br /></td>
-    <td align="center"><a href="https://github.com/SakshiPhatak"><img src="https://avatars.githubusercontent.com/u/59056739?v=4" width="100px;" alt=""/><br /><sub><b>Sakshi Phatak</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/MasterShifu619"><img src="https://avatars.githubusercontent.com/u/112150278?v=4" width="100px;" alt=""/><br /><sub><b>Bipin Gowda</b></sub></a></td>
+    <td align="center"><a href="https://github.com/IshaDave26"><img src="https://avatars.githubusercontent.com/u/23623764?v=4" width="100px;" alt=""/><br /><sub><b>Isha Dave</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/aj18coep"><img src="https://avatars.githubusercontent.com/u/59056739?v=4" width="100px;" alt=""/><br /><sub><b>Ashlesha Joshi</b></sub></a><br /></td>
 
   </tr>
 </table>
 
 ## Developers (Last Version)
 
-* Shahnewaz Leon (sleon3@ncsu.edu)
-* Dong Li (dli35@ncsu.edu)
-* Cheng-Yun Kuo (ckuo3@ncsu.edu)
-* Drew Commings (docummin@ncsu.edu)
+* Bipin Gowda (bvgowda@gmail.com)
+* Isha Dave (idave2@ncsu.edu)
+* Ashlesha Joshi (ajoshi28@ncsu.edu)
