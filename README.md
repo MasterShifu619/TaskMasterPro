@@ -118,6 +118,10 @@ Add new features here
     <img src="img/analytics.gif" width="500" height="250" />
 </p>
 
+## Check out our Videos!
+<p float="middle">
+    <img src="assets/TaskMasterPro_AnimatedPitch" width="500" height="250"/>
+</p>
 ## Want to Contribute?
 
 Interested in contributing? See our [Contributing Guide](CONTRIBUTING.md) for ways to get started.
