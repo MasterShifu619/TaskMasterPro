@@ -9,43 +9,43 @@
         /* Monday Theme */
         .monday {
             background-color: #cce7ff;
-            color: #abe6a1;
+            color: #000000
         }
 
         /* Tuesday Theme */
         .tuesday {
             background-color: #ccffd9;
-            color: #006600;
+            color: #000000
         }
 
         /* Wednesday Theme */
         .wednesday {
             background-color: #ffffcc;
-            color: #b8860b;
+            color: #000000
         }
 
         /* Thursday Theme */
         .thursday {
             background-color: #f5e6cc;
-            color: #d2691e;
+            color: #000000
         }
 
         /* Friday Theme */
         .friday {
             background-color: #e6ccff;
-            color: #6a0dad;
+            color: #000000
         }
 
         /* Saturday Theme */
         .saturday {
             background-color: #FFFFE0;
-            color: #ff4500;
+            color: #000000
         }
 
         /* Sunday Theme */
         .sunday {
             background-color: #FAFAD2;
-            color: #8b0000;
+            color: #000000
         }
         * {
             margin: 0;
@@ -71,7 +71,7 @@
         :root {
             --primary: #2557a7;      /* Bright Blue */
             --primary-light: #3b82f6; /* Lighter Blue */
-            --secondary: #10b981;    /* Emerald Green */
+            --secondary: #ccffd9;    /* Emerald Green */
             --accent: #8b5cf6;       /* Purple */
             --warning: #f59e0b;      /* Amber */
             --error: #ef4444;        /* Red */
@@ -395,6 +395,21 @@ h1 {
             box-shadow: -2px 0 5px rgba(0,0,0,0.1);
             overflow-y: auto;
             }
+            .addBtn {
+            background: var(--secondary);
+            color: #000;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
 
     </style>
     <div id="calendar">
@@ -434,6 +449,7 @@ h1 {
             const dayClass = days[currentDayIndex].toLowerCase();
 
             // Apply the theme class to the body
+            
             document.body.classList.add(dayClass);
             // Add a welcome message
             if (currentDayIndex === 0) { // Sunday
@@ -484,8 +500,11 @@ document.body.insertBefore(taskContainer, document.body.firstChild);
         <div class="card-container">
             {% if x %}
                 {% for task in x %}
+                
                     <div class="card">
-                        <h3>{{ task.title_text }}</h3>
+                        <h2>{{ task.title_text }}</h2>
+                        <br>
+                        <a href="todo">  <button class="addBtn">View Tasks</button></a>
                     </div>
                 {% endfor %}
             {% else %}
