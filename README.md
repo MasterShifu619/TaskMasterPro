@@ -4,7 +4,7 @@
 
 # The Only Todo List You Need
 
-[![Build Status](https://github.com/Chloe-Ku/smart-todo/actions/workflows/django.yml/badge.svg)](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/actions/workflows/django.yml)
+[![Build Status](https://github.com/Chloe-Ku/smart-todo/actions/workflows/django.yml/badge.svg)](https://github.com/MasterShifu619/TaskMasterPro/actions/workflows/django.yml)
 [![license badge](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/blob/main/LICENSE.md)
 [![issues badge](https://img.shields.io/github/issues/Chloe-Ku/smart-todo)](https://github.com/SoftwareEngineeringNCSU101/TaskMasterPro/issues)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
