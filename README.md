@@ -139,6 +139,6 @@ This project is licensed under the MIT License. For more details, view the [LICE
 
 ## Developers (Last Version)
 
-* Bipin Gowda (bvgowda@gmail.com)
+* Bipin Gowda (bvgowda@ncsu.edu)
 * Isha Dave (idave2@ncsu.edu)
 * Ashlesha Joshi (ajoshi28@ncsu.edu)
