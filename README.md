@@ -19,7 +19,7 @@ TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application de
 
 ### Watch this video to know more about TaskMasterPro 2.0
 
-<img src="assets/TaskMasterPro_AnimatedCompressed.mp4" width="1200" height="500" />
+<img src="img/TaskMasterPro_AnimatedCompressed.gif" width="1200" height="500" />
 
 ### Watch below video to know more about the original TaskMasterPro
 
