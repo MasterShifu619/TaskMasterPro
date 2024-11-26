@@ -341,6 +341,20 @@ startLine: 271
 endLine: 318
 ```
 
+6. Ratings chart tests
+```
+python:todo/tests/test_user_analytics.py
+startLine: 356
+endLine: 420
+```
+
+7. Task suggestion tests
+```
+python:todo/tests/test_user_analytics.py
+startLine: 422
+endLine: 483
+```
+
 ## /todo/tests/test_urls.py
 **Purpose**: Test URL routing and resolution
 
