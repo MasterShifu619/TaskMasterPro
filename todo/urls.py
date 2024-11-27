@@ -13,6 +13,7 @@ urlpatterns = [
     path('delete-todo', views.delete_todo, name='delete_todo'),
     path('templates', views.template, name='template'),
     path('templates/<int:template_id>', views.template, name='template'),
+    path('templates/delete/<int:template_id>', views.delete_template, name='delete_template'),
     path('templates/new-from-todo', views.template_from_todo, name='template_from_todo'),
     path('updateListItem', views.updateListItem, name='updateListItem'),
     path('removeListItem', views.removeListItem, name='removeListItem'),
@@ -26,5 +27,7 @@ urlpatterns = [
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name="logout"),
     path("password_reset", views.password_reset_request, name="password_reset"),
-    path('user_analytics', views.user_analytics, name='user_analytics')
+    path('user_analytics', views.user_analytics, name='user_analytics'),
+    path('analytics', views.user_analytics, name='user_analytics'),
+    path('focus', views.focus, name='focus')
 ]

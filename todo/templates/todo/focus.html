@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
+    
+    <style>
+        
+        /* Monday Theme */
+        .monday {
+            background-color: #cce7ff;
+            color: #000000
+        }
+
+        /* Tuesday Theme */
+        .tuesday {
+            background-color: #ccffd9;
+            color: #000000
+        }
+
+        /* Wednesday Theme */
+        .wednesday {
+            background-color: #ffffcc;
+            color: #000000
+        }
+
+        /* Thursday Theme */
+        .thursday {
+            background-color: #f5e6cc;
+            color: #000000
+        }
+
+        /* Friday Theme */
+        .friday {
+            background-color: #e6ccff;
+            color: #000000
+        }
+
+        /* Saturday Theme */
+        .saturday {
+            background-color: #FFFFE0;
+            color: #000000
+        }
+
+        /* Sunday Theme */
+        .sunday {
+            background-color: #FAFAD2;
+            color: #000000
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Calibri, Helvetica, sans-serif;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        /* Topbar styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --primary: #2557a7;      /* Bright Blue */
+            --primary-light: #3b82f6; /* Lighter Blue */
+            --secondary: #ccffd9;    /* Emerald Green */
+            --accent: #8b5cf6;       /* Purple */
+            --warning: #f59e0b;      /* Amber */
+            --error: #ef4444;        /* Red */
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-light: #ffffff;
+            --border: rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Inter', Calibri, Helvetica, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+        }
+
+        /* Topbar styles */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .topbar .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .topbar .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .topbar .logo:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navigation links */
+        .topbar .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .topbar .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .topbar .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Right side user section */
+        .topbar .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .topbar .welcome-text {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .topbar .logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .topbar .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Keep your existing styles below this line */
+        .sidenav {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            width: 300px;
+            height: calc(100vh - 64px);
+            background-color: #babadf;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sidebar Links */
+        .sidenav a {
+            color: #4a4a8a;  /* Darker lavender color */
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 0.75rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidenav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(4px);
+            border-color: rgba(0, 0, 0, 0.2);
+            color: #363666;  /* Even darker on hover */
+        }
+
+        /* Main Content Adjustment */
+        .main {
+            margin-left: 300px;
+            padding: 2rem;
+            margin-top: 64px;
+            background: var(--background);
+        }
+
+        /* Bullet points styling */
+        .sidenav li::before {
+            content: "•";
+            color: var(--text-primary);
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .sidenav input[type=text] {
+          border:none;
+          border-radius: 10px;
+          width: 60%;
+          margin-left: 10px;
+          padding: 10px;
+          float: left;
+          font-size: 16px;
+          box-shadow: 1px 1px 5px #555 inset;
+          white-space: nowrap;
+          display: block;
+        }
+
+        .sidenav .addTodoList {
+          padding: 9px;
+          width: 17%;
+          background: #d9d9d9;
+          color: #555;
+          float: left;
+          text-align: center;
+          font-size: 16px;
+          cursor: pointer;
+          transition: 0.3s;
+          border-radius: 10px;
+          display: inline-block;
+        }
+
+        .sidenav .addTodoList:hover {
+          background-color: #bbb;
+        }
+
+        .sidenav hr {
+            margin-top: 50px;
+            height: 2px;
+            background-color: #0fa662;
+            border: none;
+            width: 87%;
+            display: block;
+        }
+
+        .main h2 a {
+            text-decoration: none;
+            color: #0fa662;
+            display: block;
+            padding-left: 3px;
+        }
+
+        /* Include the padding and border in an element's total width and height */
+        .main * {
+          box-sizing: border-box;
+        }
+
+        /* Remove margins and padding from the list */
+        .main ul {
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Style the list items */
+        .main ul li {
+          cursor: pointer;
+          position: relative;
+          padding: 12px 8px 12px 40px;
+          list-style-type: none;
+          background: #f9f9f9;
+          font-size: 18px;
+          transition: 0.2s;
+          border-radius: 10px; /* does rounded edges on list items */
+          
+
+          /* make the list items unselectable */
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        /* Darker background-color on hover */
+        .main ul li:hover {
+          background: #ddd;
+        }
+
+        .main ul li.done {
+          background: #3d3939;
+          color: #fff;
+          text-decoration: line-through;
+        }
+
+        /* Style the close button */
+        .main .close {
+          position: absolute;
+          right: 0;
+          top: 0;
+          padding: 12px 16px 12px 16px;
+          border-radius: 10px;
+        }
+
+        .main .close:hover {
+          background-color: #f44336;
+          color: white;
+        }
+
+        /* Style the header */
+        .main .header {
+          color: white;
+          display: block;
+        }
+
+        /* Clear floats after the header */
+        .main .header:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+h1 {
+    color: #333; /* Dark gray for better contrast */
+}
+.centred {
+    text-align: center; /* Center the text */
+    margin: 20px 0;    /* Optional: Add some margin for spacing */
+}
+.card-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* Individual Card Styling */
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            width: 200px;
+            height: 150px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Adds a hover effect */
+        }
+
+        .card h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Style for the "No tags found" message */
+        .no-tags {
+            font-size: 18px;
+            color: #666;
+        }
+        #calendar {
+            position: fixed;
+            right: 0;
+            top: 70px;
+            width: 400px;
+            height: 100%;
+            background-color: #f9f9f9;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            }
+            .addBtn {
+            background: var(--secondary);
+            color: #000;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
+
+    </style>
+    <div id="calendar">
+        <!-- Calendar content -->
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            
+            // Log to check if the element is found
+            console.log(calendarEl);
+
+            // Parse JSON safely from context
+            var calendarEvents;
+            try {
+                calendarEvents = JSON.parse('{{ calendar_events|escapejs }}');
+                console.log(calendarEvents); // Log the events to verify
+            } catch (e) {
+                console.error('Error parsing calendar events:', e);
+                return;
+            }
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: calendarEvents
+            });
+
+            calendar.render();
+        });
+
+      </script>
+        <script>
+        function applyTheme() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const currentDayIndex = new Date().getDay(); // Get the current day index
+            const currentDayName = days[currentDayIndex];
+            const dayClass = days[currentDayIndex].toLowerCase();
+
+            // Apply the theme class to the body
+            
+            document.body.classList.add(dayClass);
+            // Add a welcome message
+            if (currentDayIndex === 0) { // Sunday
+                message = "It's Planning Sunday!";
+            } else if (currentDayIndex === 1) { // Monday
+                message = "It's Refreshing Monday!";
+            } else if (currentDayIndex === 2) { // Tuesday
+                message = "It's Learning Tuesday!";
+            } else if (currentDayIndex === 3) { // Wednesday
+                message = "It's Wellness Wednesday!";
+            } else if (currentDayIndex === 4) { // Thursday
+                message = "It's Collaborative Thursday!";
+            } else if (currentDayIndex === 5) { // Friday
+                message = "It's Fitness Friday!";
+            } else if (currentDayIndex === 6) { // Saturday
+                message = "It's Self-Care Saturday!";
+        }
+
+           // Create the task container
+const taskContainer = document.createElement('div');
+
+// Set the inner HTML with the message
+taskContainer.innerHTML = `<h1 class="centred"><br><br>${message}</h1>`;
+
+// Append the task container to the body at the top
+document.body.insertBefore(taskContainer, document.body.firstChild);
+        }
+
+        // Run the function when the page loads
+        window.onload = applyTheme;
+    </script>
+</head>
+<body>
+    {% load todo_extras %}
+    <div class="topbar">
+        <div class="nav-left">
+            <a href="/" class="logo">To-Done</a>
+            <div class="nav-links">
+                <a href="/todo" class="tabs">Lists</a>
+                <a href="/templates" class="tabs">Templates</a>
+                <a href="/user_analytics" class="tabs">User-Analytics</a>
+                <a href="/focus" class="tabs">Daily Focus</a>
+            </div>
+        </div></div></div>
+    
+    <div></div>
+        <h1>Your Lists for Today!</h1>
+        <div class="card-container">
+            {% if x %}
+                {% for task in x %}
+                
+                    <div class="card">
+                        <h2>{{ task.title_text }}</h2>
+                        <br>
+                        <a href="todo">  <button class="addBtn">View Tasks</button></a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No tasks for today!</p>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+        
+
+    
+</body>
+</html>

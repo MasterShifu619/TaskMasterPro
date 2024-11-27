@@ -31,6 +31,7 @@ class ListItem(models.Model):
     # the text note of a list item
     item_text = models.CharField(max_length=100)
     is_done = models.BooleanField(default=False)
+    rating = models.IntegerField(default=2)
     created_on = models.DateTimeField()
     list = models.ForeignKey(List, on_delete=models.CASCADE)
     # finished_on = models.DateTimeField()

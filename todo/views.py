@@ -25,62 +25,35 @@ from django.utils.encoding import force_bytes
 from django.core.mail import EmailMessage
 from django.utils.safestring import mark_safe
 
+from .task_suggester import TaskSuggester
+
 
 # Render the home page with users' to-do lists
 def index(request, list_id=0):
     if not request.user.is_authenticated:
         return redirect("/login")
     
-    shared_list = []
-
     if list_id != 0:
-        # latest_lists = List.objects.filter(id=list_id, user_id_id=request.user.id)
         latest_lists = List.objects.filter(id=list_id)
-
     else:
         latest_lists = List.objects.filter(user_id_id=request.user.id).order_by('-updated_on')
 
-        try:
-            query_list_str = SharedList.objects.get(user_id=request.user.id).shared_list_id
-        except SharedList.DoesNotExist:
-            query_list_str = None
-        
-        if query_list_str != None:
-            shared_list_id = query_list_str.split(" ")
-            shared_list_id.remove("")
-
-            latest_lists = list(latest_lists)
-
-            for list_id in shared_list_id:
-            
-                try:
-                    query_list = List.objects.get(id=int(list_id))
-                except List.DoesNotExist:
-                    query_list = None
-
-                if query_list:
-                    shared_list.append(query_list)
-        
+    # Get ALL list items and let the template handle filtering
     latest_list_items = ListItem.objects.order_by('list_id')
+    
     saved_templates = Template.objects.filter(user_id_id=request.user.id).order_by('created_on')
     list_tags = ListTags.objects.filter(user_id=request.user.id).order_by('created_on')
+    shared_lists = SharedList.objects.filter(user=request.user)
     
-    # change color when is or over due
-    cur_date = datetime.date.today()
-    for list_item in latest_list_items:       
-        list_item.color = "#FF0000" if cur_date > list_item.due_date else "#000000"
-    
-    # Filter ListItems by lists belonging to the logged-in user
-    user = request.user
-    user_lists = List.objects.filter(user_id=user)
+    # Calendar events code...
+    user_lists = List.objects.filter(user_id=request.user)
     user_list_items = ListItem.objects.filter(list__in=user_lists)
-
-    # Calendar events based on user's tasks with a due date
+    
     calendar_events = [
         {
             "title": item.item_name,
             "start": item.due_date.strftime('%Y-%m-%d'),
-            "end": item.due_date.strftime('%Y-%m-%d')  # Optional end date
+            "end": item.due_date.strftime('%Y-%m-%d')
         }
         for item in user_list_items if item.due_date
     ]
@@ -90,7 +63,7 @@ def index(request, list_id=0):
         'latest_list_items': latest_list_items,
         'templates': saved_templates,
         'list_tags': list_tags,
-        'shared_list': shared_list,
+        'shared_list': shared_lists,
         'calendar_events': mark_safe(json.dumps(calendar_events))
     }
     return render(request, 'todo/index.html', context)
@@ -99,26 +72,31 @@ def index(request, list_id=0):
 def todo_from_template(request):
     if not request.user.is_authenticated:
         return redirect("/login")
+    
     template_id = request.POST['template']
     fetched_template = get_object_or_404(Template, pk=template_id)
-    todo = List.objects.create(
+    
+    current_time = timezone.now()
+    new_list = List.objects.create(
         title_text=fetched_template.title_text,
-        created_on=timezone.now(),
-        updated_on=timezone.now(),
+        created_on=current_time,
+        updated_on=current_time,
         user_id_id=request.user.id
     )
+    
     for template_item in fetched_template.templateitem_set.all():
         ListItem.objects.create(
             item_name=template_item.item_text,
             item_text="",
-            created_on=timezone.now(),
-            finished_on=timezone.now(),
-            due_date=timezone.now(),
+            created_on=current_time,
+            finished_on=current_time,
+            due_date=current_time,
             tag_color=template_item.tag_color,
-            list=todo,
+            list_id=new_list.id,
             is_done=False,
         )
-    return redirect("/todo")
+    
+    return redirect('/todo')
 
 
 # Create a new Template from existing to-do list and redirect to the templates list page
@@ -263,9 +241,6 @@ def addNewListItem(request):
 # Mark a to-do list item as done/not done, called by javascript function
 @csrf_exempt
 def markListItem(request):
-    """
-    Mark a list item as done or undo it
-    """
     if not request.user.is_authenticated:
         return redirect("/login")
     if request.method == 'POST':
@@ -274,29 +249,37 @@ def markListItem(request):
         list_id = body['list_id']
         list_item_name = body['list_item_name']
         list_item_id = body['list_item_id']
-        # remove the first " and last "
+        rating = body.get('rating', 0)  # Default to 0 if no rating provided
         list_item_is_done = True
         is_done_str = str(body['is_done'])
         finish_on = body['finish_on']
         finished_on_time = datetime.datetime.fromtimestamp(finish_on)
-        print("is_done: " + str(body['is_done']))
+
         if is_done_str == "0" or is_done_str == "False" or is_done_str == "false":
             list_item_is_done = False
+            rating = 0  # Set rating to 0 when unchecking
+
         try:
             with transaction.atomic():
                 query_list = List.objects.get(id=list_id)
                 query_item = ListItem.objects.get(id=list_item_id)
                 query_item.is_done = list_item_is_done
-                query_item.finished_on = finished_on_time
+                query_item.rating = rating  # Rating will always have a value now
+                if list_item_is_done:
+                    query_item.finished_on = finished_on_time
+                else:
+                    query_item.finished_on = None
                 query_item.save()
-                # Sending an success response
-                return JsonResponse({'item_name': query_item.item_name, 'list_name': query_list.title_text, 'item_text': query_item.item_text})
-        except IntegrityError:
-            print("query list item" + str(list_item_name) + " failed!")
-            JsonResponse({})
-        return HttpResponse("Success!")  # Sending an success response
-    else:
-        return HttpResponse("Request method is not a Post")
+                return JsonResponse({
+                    'success': True,
+                    'item_name': query_item.item_name,
+                    'list_name': query_list.title_text,
+                    'item_text': query_item.item_text
+                })
+        except IntegrityError as e:
+            print(f"Error updating list item: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
 
 # Get all the list tags by user id
 @csrf_exempt
@@ -590,6 +573,10 @@ def user_analytics(request):
     # Due soon tasks for alert
     due_soon_items = user_list_items.filter(due_date=tomorrow, is_done=False)
 
+    # Check number of ratings
+    ratings_3 = user_list_items.filter(rating = 3, is_done=True).count()
+    ratings_2 = user_list_items.filter(rating = 2, is_done=True).count()
+    ratings_1 = user_list_items.filter(rating = 1, is_done=True).count()
     # Aggregations for daily, weekly, and monthly completions
     daily_completions = user_list_items.filter(is_done=True).annotate(date=TruncDay('finished_on')).values('date').annotate(count=Count('id')).order_by('date')
     weekly_completions = user_list_items.filter(is_done=True).annotate(week=TruncWeek('finished_on')).values('week').annotate(count=Count('id')).order_by('week')
@@ -666,6 +653,13 @@ def user_analytics(request):
         for item in user_list_items if item.due_date
     ]
 
+    # Get the user's lists
+    user_lists = List.objects.filter(user_id=request.user)
+    
+    # Create task suggester instance
+    task_suggester = TaskSuggester(user_lists)
+    suggested_tasks = task_suggester.get_suggested_tasks()
+    
     context = {
         'list_items': user_list_items,
         'daily_data': daily_data,
@@ -679,12 +673,66 @@ def user_analytics(request):
         'avg_completion_time_hours': avg_completion_time_hours,
         'busy_days': busy_days,
         'today': today,
+        'ratings_3': ratings_3,
+        'ratings_2': ratings_2,
+        'ratings_1': ratings_1,
         'calendar_events': mark_safe(json.dumps(calendar_events)),
-        'due_soon_items': due_soon_items  # Add due soon items for alert
+        'due_soon_items': due_soon_items,
+        'suggested_tasks': suggested_tasks,  # Add this line
     }
 
     return render(request, 'todo/user_analytics.html', context)
 
+def focus(request, list_id=0):
+    if request == '':
+        return	
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        list_tags = List.objects.filter(user_id=user_id).values('title_text', 'list_tag')
+        print(list_tags)
+        #tag_names_dict = {tag["tag_name"]: 1 for tag in list_tags}
+        tag_names_dict = defaultdict(list)
+        user_lists = List.objects.filter(user_id_id=request.user.id).order_by('-updated_on')
+        i = 0
+        tag_names_dicts = {}
+        today_num = datetime.datetime.now().weekday()
+        user_lists = List.objects.filter(user_id=user_id)
+        #print(user_lists)
+        user_list_items = ListItem.objects.filter(list__in=user_lists)
+        print(user_list_items)
+        calendar_events = [
+        {
+            "title": item.item_name,
+            "start": item.due_date.strftime('%Y-%m-%d'),
+            "end": item.due_date.strftime('%Y-%m-%d')  # Optional end date
+        }
+            for item in user_list_items if item.due_date]
+        title = []
+        for item in user_list_items:
+            title.append(item.item_name)
+        if today_num == 0:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Refreshing').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 1:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Learning').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 2:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Wellness').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 3:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Meeting').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 4:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Fitness').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 5:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Self Care').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        elif today_num == 6:
+            x = List.objects.filter(user_id=user_id, list_tag__iexact='Planning').values('title_text', 'list_tag')
+            return render(request, 'todo/focus.html', {'x': x, 'calendar_events': mark_safe(json.dumps(calendar_events))})
+        else:
+            pass
 
 from celery import shared_task
 from django.core.mail import send_mail
@@ -708,4 +756,8 @@ def create_due_tasks_message(user, tasks):
     message += "\nPlease complete them on time!"
     return message
 
-
+def delete_template(request, template_id):
+    if request.method == 'POST':
+        template = get_object_or_404(Template, id=template_id)
+        template.delete()
+        return redirect('todo:template')  # Use 'todo:template' instead of just 'templates'

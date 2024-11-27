@@ -1,19 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'> 
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-curved/css/uicons-solid-curved.css'>
+    
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
     <style>
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        :root {
+            --primary: #2557a7;      /* Bright Blue */
+            --primary-light: #3b82f6; /* Lighter Blue */
+            --secondary: #10b981;    /* Emerald Green */
+            --accent: #8b5cf6;       /* Purple */
+            --warning: #f59e0b;      /* Amber */
+            --error: #ef4444;        /* Red */
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-light: #ffffff;
+            --border: rgba(0, 0, 0, 0.1);
+        }
 
         body {
-            font-family: Calibri, Helvetica, sans-serif;
+            font-family: 'Inter', Calibri, Helvetica, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
         }
 
         ul {
@@ -22,526 +41,961 @@
         }
 
         /* Topbar styles */
-.topbar {
-    background-color: #1458a0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .topbar .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .topbar .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .topbar .logo:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        /* Navigation links */
+        .topbar .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .topbar .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .topbar .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-/* Styling for links in the topbar */
-.topbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 22px;
-    margin-right: 20px;
-    transition: color 0.3s ease;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
+        .topbar .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0.5rem;
+            right: 0.5rem;
+            height: 2px;
+            background: var(--text-light);
+            border-radius: 2px;
+        }
 
-/* Links hover effect */
-.topbar a:hover {
-    color: #ccc;
-    background-color: rgba(255, 255, 255, 0.2);
-}
+        /* Right side user section */
+        .topbar .user-section {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
 
-/* Flexbox for horizontal alignment */
-.topbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
+        .topbar .welcome-text {
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .topbar .logout-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
-/* Style for each list item */
-.topbar ul li {
-    margin: 0 15px;
-}
+        .topbar .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
 
-/* Responsiveness: adjust padding and font size for smaller screens */
-@media (max-width: 768px) {
-    .topbar {
-        padding: 10px 15px;
-    }
-    
-    .topbar a {
-        font-size: 18px;
-        margin-right: 10px;
-    }
-    
-    .topbar ul li {
-        margin: 0 10px;
-    }
-}
+        /* Sidebar (sidenav) styles */
+        .sidenav {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 300px;
+            height: calc(100vh - 60px);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 2rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.05);
+        }
+        /* Create Todo Form Styling */
+        .create-todo-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-/* Further responsiveness for very small devices */
-@media (max-width: 480px) {
-    .topbar a {
-        font-size: 16px;
-        margin-right: 8px;
-    }
-    
-    .topbar ul li {
-        margin: 0 8px;
-    }
-}
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
 
-        
-/* Sidebar (sidenav) styles */
-.sidenav {
-    height: 100%;
-    width: 300px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #babadf;
-    padding-top: 20px; /* Enough padding to clear the topbar height */
-    margin-top: 60px; /* Adjusted to match the topbar height */
-    padding-left: 10px;
-    overflow-x: hidden;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-    z-index: 99; /* Make sure the sidebar is below the topbar */
-    transition: width 0.3s ease;
-}
+        .form-group label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
 
-/* Sidebar list items */
-.sidenav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 10px;
-}
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(15, 166, 98, 0.1);
+            outline: none;
+        }
 
-.sidenav ul li {
-    padding: 12px 20px;
-    color: #333;
-    text-align: left;
-    font-size: 18px;
-    transition: background 0.3s ease;
-}
+        /* Add Button Styling */
+        .addBtn {
+            background: var(--secondary);
+            color: var(--text-light);
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+        }
 
-/* Sidebar link styles */
-.sidenav a {
-    text-decoration: none;
-    font-size: 18px;
-    color: #333;
-    display: block;
-    padding: 10px 20px;
-    transition: background 0.3s ease, color 0.3s ease;
-}
+        .addBtn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
 
-/* Sidebar hover effects */
-.sidenav a:hover {
-    background-color: #e2e2e2;
-    color: #0fa662;
-}
+        /* Main content area styling */
+        .main {
+            margin-left: 300px;
+            margin-right: 400px;
+            margin-top: 64px;
+            padding: 2rem;
+            min-height: calc(100vh - 64px);
+            background: var(--background);
+            overflow-y: auto;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+        /* Empty State Styling */
+        .empty-state {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-.sidenav li:hover {
-    background-color: #ddd;
-}
+        .empty-state h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .empty-state p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
 
-/* Input fields inside the sidebar */
-.sidenav input[type=text],
-.sidenav select {
-    width: 90%;
-    margin: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.1);
-}
+        .emoji-rating {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-/* Add button for todo lists */
-.sidenav .addTodoList {
-    padding: 12px 20px; /* Slightly larger padding for a better feel */
-    background: #0fa662;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 80%; /* Adjust width to make the button smaller */
-    margin: 30px auto; /* Centers the button horizontally */
-    display: block; /* Ensures it's treated as a block element for centering */
-}
+        .emoji-btn {
+            font-size: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-.sidenav .addTodoList:hover {
-    background-color: #04502e;
-}
+        .emoji-btn:hover {
+            transform: scale(1.2);
+        }
 
-/* Divider (hr) styling */
-.sidenav hr {
-    border: none;
-    height: 1px;
-    background-color: #0fa662;
-    margin: 30px 5%;
-}
-
-/* Main content area styling */
-.main {
-    margin-left: 300px; /* Adjusted margin-left to match the width of the left sidebar */
-    margin-right: 500px; /* Right margin for right sidebar */
-    padding: 20px;
-    font-size: 20px;
-    margin-top: 70px; /* Top margin to ensure it doesn't overlap with the topbar */
-    background-color: #fff;
-    transition: margin 0.3s ease;
-}
-
-/* Links inside the main content */
-.main h2 a {
-    text-decoration: none;
-    color: #0fa662;
-    display: block;
-    padding-left: 5px;
-    transition: color 0.3s ease;
-}
-
-.main h2 a:hover {
-    color: #0b8f54;
-}
-
-/* Message when no lists are available */
-#noListYet {
-    text-decoration: none;
-    color: #0fa662;
-    display: block;
-    text-align: center;
-    padding: 20px;
-    font-size: 24px;
-    font-weight: 500;
-}
-
-/* Ensures that all children of .main adhere to the box-sizing rule */
-.main * {
-    box-sizing: border-box;
-}
-
-/* Removes padding and margins from unordered lists */
-.main ul {
-    margin: 0;
-    padding: 0;
-}
-
-/* Styling for list items */
-.main ul li {
-    position: relative;
-    padding: 12px 20px 12px 40px; /* Spacing for the checkbox */
-    list-style-type: none;
-    background: #f9f9f9;
-    font-size: 18px;
-    transition: background-color 0.3s ease;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
-
-/* Label styling */
-.main ul li label {
-    flex-grow: 1;
-    display: inline-block;
-}
-
-/* Hover effect for list items */
-.main ul li:hover {
-    background: #ddd;
-}
-
-/* Completed task (done) styling */
-.main ul li.done {
-    background-color: #3d3939;
-    color: #fff;
-    text-decoration: line-through;
-}
-
-/* Close button for each list item */
-.main ul li .close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    color: #000;
-    background-color: transparent;
-    border: none;
-    padding: 8px;
-    transition: color 0.3s ease;
-}
-
-.main ul li .close:hover {
-    color: #f44336;
-}
-
-
-/* Header styling */
-.main .header {
-    color: black;
-    display: block;
-    font-size: 28px;
-    margin-bottom: 20px;
-}
-
-/* Ensures clear floats after header */
-.main .header:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-/* Input field for text */
-.main input[type=text] {
-    border: none;
-    border-radius: 10px;
-    width: 75%;
-    padding: 10px;
-    font-size: 16px;
-    box-shadow: inset 1px 1px 5px #555;
-    margin-bottom: 10px;
-}
-
-/* Input field for date */
-.main input[type=date] {
-    border: none;
-    border-radius: 10px;
-    width: 75%;
-    padding: 10px;
-    font-size: 16px;
-    box-shadow: inset 1px 1px 5px #555;
-    margin-bottom: 10px;
-}
-
-/* Input field for color selection */
-.main input[type=color] {
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* Checkbox styling within list items */
-.main ul li input[type=checkbox] {
-    position: relative;
-    margin-right: 10px;
-    width: 20px;
-    height: 20px;
-}
-
-
-/* Add button styling */
-.main .addBtn {
-    padding: 9px;
-    width: 30%;
-    background: #0fa662;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 30px auto; /* Centers the button horizontally */
-    display: block; /* Ensures it's treated as a block element for centering */
-}
-
-.main .addBtn:hover {
-    background-color: #bbb;
-}
-
-/* Button styling remains the same */
-.main .add-template-button {
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 10px;
-    background: #0fa662;
-    border: 0;
-    font-size: 16px;
-    height: 37px;
-    padding: 0 20px;
-    text-align: center;
-    width: auto;
-    font-weight: 500;
-    color: #f9f9f9;
-    margin: 10px;
-}
-
-.main .add-template-button.delete {
-    background: #a81a0f;
-}
-
-.main .add-template-button:hover {
-    background: #0b8f54;
-}
-
-.main .add-template-button.delete:hover {
-    background: #d11a1a;
-}
-
-/* Flex container to align forms side by side */
-.button-container {
-    display: flex;
-    justify-content: center; /* Aligns buttons at the center */
-    gap: 10px; /* Adds spacing between buttons */
-    margin-top: 20px;
-}
-
-
-/* Customize color button styling */
-.main .add-cust-color-button {
-    position: absolute;
-    right: 50px;
-    top: 0;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 10px;
-    background: #0fa662;
-    color: #f9f9f9;
-    border: 0;
-    font-size: 16px;
-    height: 37px;
-    padding: 0 11px;
-    margin-top: 5px;
-    width: 10%;
-    text-align: center;
-    min-width: 100px;
-    font-weight: 300;
-}
-
-.main .add-cust-color-button:hover {
-    background: #0b8f54;
-}
-
-/* Tag template styling */
-.tag-template {
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 10px;
-    border: 1px solid #0fa662;
-    font-size: 16px;
-    height: 40px;
-    text-align: center;
-    width: fit-content;
-    font-weight: 500;
-    color: #0fa662;
-    margin: 10px;
-}
-
-
-    /* Shared list style */
-    .shared-list {
-    color: black;
-    font-size: 12px;
-    margin-top: 5px;
-    padding-left: 5px;
-    }
-
-    /* Flashcard styling */
-    .flashcard {
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow effect */
-    transition: box-shadow 0.3s ease;
-    width: 100%;
-    }
-
-    .flashcard:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
-    }
-
-
-    /* Flashcard labels */
-    .flashcard label {  
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    }
-
-    /* Flashcard flex container for inputs and buttons */
-    .flashcard .flex-container {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .popup-container {
-    display: none; /* Hidden by default */
-    position: relative;
-    background-color: #f9f9f9; /* Light background for readability */
-    padding: 15px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-    width: 95%;
-    max-width: 500px; /* Limit max width for cleaner look */
-}
-
-.popup-container form {
-    display: flex;
-    flex-direction: column;
-}
-
-.popup-container label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.popup-container textarea {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px;
-    resize: vertical;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-}
-
-.popup-container .save-button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.popup-container .save-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-.popup-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 18px;
-    color: #888;
-}
-
-.popup-close-btn:hover {
-    color: #333; /* Darker color on hover */
-}
-
+        /* Calendar Container */
         #calendar {
             position: fixed;
             right: 0;
             top: 70px;
             width: 400px;
-            height: 100%;
-            background-color: #f9f9f9;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-            overflow-y: auto;
+            height: calc(100vh - 70px);
+            background: var(--surface);
+            padding: 1.5rem;
+            z-index: 10;
+        }
+
+        /* Calendar Header */
+        #calendar .fc-header-toolbar {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 12px !important;
+            margin: 0 !important;
+        }
+
+        /* Calendar Title */
+        #calendar .fc-toolbar-title {
+            font-size: 1.75rem !important;
+            font-weight: 700 !important;
+            color: var(--text-primary) !important;
+        }
+        /* Calendar Controls */
+        #calendar .fc-toolbar-chunk:last-child {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        /* Today Button */
+        #calendar .fc-today-button {
+            height: 36px !important;
+            padding: 0 16px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+        }
+        /* Navigation Buttons */
+        #calendar .fc-button-group button {
+            height: 36px !important;
+            width: 36px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidenav {
+                width: 250px;
             }
+            
+            .main {
+                margin-left: 250px;
+                margin-right: 350px;
+            }
+            
+            #calendar {
+                width: 350px;
+            }
+        }
+        @media (max-width: 992px) {
+            .main {
+                margin-right: 0;
+            }
+            
+            #calendar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidenav {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidenav.active {
+                transform: translateX(0);
+            }
+            
+            .main {
+                margin-left: 0;
+            }
+            
+            .topbar {
+                padding: 0 1rem;
+            }
+        }
+        /* Calendar Container */
+        .fc-header-toolbar.fc-toolbar {
+            padding: 1rem !important;
+        }
+
+        /* Toolbar Chunks */
+        .fc-toolbar-chunk {
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+
+        /* Today Button */
+        .fc-today-button.fc-button.fc-button-primary {
+            height: 36px !important;
+            padding: 0 16px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            text-transform: capitalize !important;
+        }
+        /* Button Group Container */
+        .fc-button-group {
+            display: flex !important;
+            gap: 4px !important;
+            margin-left: 8px !important;  /* Space between today and nav buttons */
+        }
+
+        /* Navigation Buttons */
+        .fc-prev-button.fc-button,
+        .fc-next-button.fc-button {
+            height: 36px !important;
+            width: 36px !important;
+            background: var(--primary) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Hover states */
+        .fc-button:hover {
+            background: var(--primary-light) !important;
+            opacity: 0.9 !important;
+        }
+        /* Disabled state */
+        .fc-button:disabled {
+            opacity: 0.6 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* Todo Lists Container */
+        .todo-lists {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-bottom: 2rem;
+        }
+
+        /* Individual Todo List */
+        .flashcard {
+            background: var(--surface);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+
+        /* Color Input Styling */
+        input[type="color"] {
+            width: 40px;  /* Reduced width */
+            height: 30px;  /* Reduced height */
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        /* Form Group for Color Input */
+        .form-group input[type="color"] {
+            width: 40px;  /* Override the default full width */
+        }
+
+        /* Color Tag Label */
+        .form-group label[for="InputColor"] {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Add these specific styles */
+        .color-input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: transparent;
+        }
+
+        /* Override any other styles that might be affecting it */
+        .form-group input[type="color"].color-input {
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0;
+            margin: 0;
+        }
+        /* Ensure the container doesn't force a larger size */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            align-items: flex-start;  /* This will prevent stretching */
+        }
+
+        /* Button Container */
+        .button-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Base button styles */
+        .button-container button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;  /* Make buttons take equal width */
+        }
+
+        /* Save As Template button */
+        .add-template-button {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+        .add-template-button:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(37, 87, 167, 0.2);
+        }
+
+        /* Delete button */
+        .add-template-button.delete {
+            background: var(--error);
+            color: var(--text-light);
+        }
+
+        .add-template-button.delete:hover {
+            background: #dc2626;  /* Slightly darker red */
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+
+        /* List Header Styling */
+        .main .flashcard .header h2 a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .main .flashcard .header h2 a:hover {
+            text-decoration: underline;
+        }
+        /* Tag Button Styling */
+        .main .flashcard .header .tag-template {
+            background: var(--background);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Tag Icon Styling */
+        .main .flashcard .header .bi.bi-tag-fill {
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+        }
+
+        /* List Title and Tag Styling */
+        .main a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+        .main a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tag styling */
+        .main a + span {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            background: #e5e7eb;
+            color: var(--text-secondary);
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        /* List Content Styling */
+        .main .flashcard {
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Form Group Spacing */
+        .main .flashcard label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        /* Input Fields */
+        .main .flashcard input[type="text"],
+        .main .flashcard input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Color Tag Section */
+        .color-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .color-section label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .color-options {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        /* Hide the extra color box */
+        .color-options .color-box {
+            display: none;  /* This will hide the extra white box */
+        }
+        /* Style the color picker and preview */
+        .color-options input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        .color-options .color-preview {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+
+        /* Title and New Task spacing */
+        .main .flashcard h2 {
+            margin-bottom: 2rem;  /* More space after title */
+        }
+
+        /* New Task label */
+        .main .flashcard label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;  /* Reduced space between label and input */
+            display: block;
+        }
+        /* Color Tag section */
+        .main .flashcard .color-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .main .flashcard .color-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .main .flashcard .color-options {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Button Styling */
+        .addBtn, 
+        .add-template-button {
+            font-size: 0.875rem;  /* Smaller font size for buttons */
+            padding: 0.75rem 1.5rem;
+        }
+
+        .add-template-button.delete {
+            font-size: 0.875rem;  /* Match font size for delete button */
+        }
+        /* Input Fields */
+        .main .flashcard input[type="text"],
+        .main .flashcard input[type="date"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;  /* Space between input groups */
+        }
+
+        /* Placeholder Text Color */
+        .main .flashcard input::placeholder {
+            color: #9CA3AF;  /* Grey color for placeholder */
+        }
+
+        /* Date Input Specific */
+        .main .flashcard input[type="date"] {
+            color: #9CA3AF;  /* Grey color for the date placeholder */
+        }
+
+        /* Date Input when filled */
+        .main .flashcard input[type="date"]:not(:placeholder-shown) {
+            color: var(--text-primary);  /* Regular text color when date is selected */
+        }
+         /* Color Tag Row */
+         .main .flashcard label[for="Color Tag"] {
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        /* Color Picker and Preview */
+        .main .flashcard input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 2px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        /* Hide the last white box */
+        .main .flashcard input[type="color"] + input[type="color"],
+        .main .flashcard input[type="color"] ~ div:last-child {
+            display: none;  /* This will hide the last white box */
+        }
+        /* Task Item Container */
+        .listItem {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            margin: 8px 0;
+            background: var(--surface);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
+            width: 100%;  /* Restore full width */
+        }
+
+        /* Update strikethrough to exclude close button */
+        .listItem.done label,
+        .listItem.done span:not(.close) {  /* Exclude the close button from strikethrough */
+            text-decoration: line-through;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+        /* Keep close button styles independent */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            opacity: 1 !important;  /* Ensure opacity stays at 1 */
+        }
+        /* Keep the checkbox styling */
+        .listItem input[type="checkbox"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 6px;
+            margin-right: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+            background: var(--surface);
+        }
+
+        /* Update the checkmark color */
+        .listItem input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--primary);  /* Use your theme blue color */
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            z-index: 2;
+        }
+        /* Optional: If you want to change the checkbox background when checked */
+        .listItem input[type="checkbox"]:checked {
+            background: var(--surface);  /* Keep background white/light */
+            border-color: var(--primary);
+        }
+        /* Task content spacing */
+        .listItem label {
+            margin-right: 24px;  /* Space after task name */
+        }
+
+        /* Date and completion time spacing */
+        .listItem span {
+            margin-right: 24px;  /* Space between date elements */
+        }
+        /* Close button */
+        .listItem .close {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            background-color: #f0f0f0;  /* Light gray background */
+            border: 1px solid #ddd;     /* Subtle border */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);  /* Subtle shadow */
+        }
+
+        /* Hover effect */
+        .listItem .close:hover {
+            background-color: #ff4444;  /* Red background on hover */
+            color: white;              /* White text on hover */
+            border-color: #ff4444;     /* Red border on hover */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  /* Slightly larger shadow on hover */
+        }
+
+        /* Active state when clicked */
+        .listItem .close:active {
+            transform: translateY(-50%) scale(0.95);  /* Slight scale down when clicked */
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        /* Make sure the parent has relative positioning */
+        .listItem {
+            position: relative;  /* Add this if not already present */
+            padding-right: 40px;  /* Increase padding to accommodate the moved button */
+        }
+
+        /* Close button styling */
+        .listItem span.close {
+            position: absolute;
+            right: -8px;         /* Push it further right */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: var(--secondary);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Hover effect to match Add button */
+        .listItem span.close:hover {
+            transform: translateY(-50%) translateY(-1px);  /* Keep vertical centering while moving up */
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);  /* Match Add button shadow */
+        }
+        /* Make sure parent has proper positioning */
+        li.listItem {  /* Updated to match your HTML structure */
+            position: relative;
+            padding-right: 80px;
+        }
+
+        /* Add this to your CSS section */
+        .listItem .clone {
+            position: absolute;
+            right: 30px;  /* Position it to the left of the close button */
+            top: 50%;
+            transform: translateY(-50%);
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-light);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: var(--primary);  /* Use your primary color */
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .rating {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* Add other styles for your popup */
+            width: 300px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .listItem .clone:hover {
+            transform: translateY(-50%) translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(37, 87, 167, 0.2);
+        }
+
+        /* Update the list item padding to accommodate both buttons */
+        .listItem {
+            position: relative;
+            padding-right: 96px;  /* Increased to fit both buttons */
+        }
+
+        .list-card {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .close-btn {
+            cursor: pointer;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .lists-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .list-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-items {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .list-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Popup Close Button */
+        .popup-close-btn {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .popup-close-btn:hover {
+            color: var(--error);
+        }
+
+        /* Popup Container (if not already present) */
+        .popup-container {
+            position: relative;
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
     </style>
     <meta charset="UTF-8">
     <title>To-Done</title>
@@ -549,40 +1003,110 @@
 <body>
     {% load todo_extras %}
     <div class="topbar">
-        <ul>
-            <li><a href="/">To-Done</a></li>
-            <li><a class="tabs" href="/todo">Lists</a></li>
-            <li><a class="tabs" href="/templates">Templates</a></li>
-            <li><a class="tabs" href="/user_analytics">User-Analytics</a></li>
-        </ul>
-		<ul style="float: right;">
-		{% if user.is_authenticated %}
-            <li><a href="#">Welcome, {{user.username}}</a></li>
-		  <li><a class="tabs" href="/logout">Logout</a></li>
-		{% else %}
-		  <li><a class="tabs" href="/login">Login</a></li>
-		{% endif %}
-		</ul>
+        <div class="nav-left">
+            <a href="/" class="logo">To-Done</a>
+            <div class="nav-links"> 
+                <a href="/todo">Lists</a>
+                <a href="/templates">Templates</a>
+                <a href="/user_analytics">User-Analytics</a>
+		<a href="/focus">Daily Focus</a>
+            </div>
+        </div>
+		<div class="user-section">
+            {% if user.is_authenticated %}
+            <span a href="#" class="welcome-text">Welcome, {{user.username}}</a></span>
+            <a href="/logout" class="logout-btn">Logout</a>
+            {% else %}
+            <a class="tabs" href="/login">Login</a>
+            {% endif %}
+        </div>
     </div>
     <div class="sidenav">
-        <h3>Create a new todo list</h3>
-        <input type="text" id="todoListInput" placeholder="New Todo List">
-        <div>Select a tag for your todo list</div>
-        <select id="listTags" onchange="toggleNewTagInput()">
-            {% for tag in list_tags %}
-            <option>{{ tag.tag_name }}</option>
-            {% endfor %}
-            <option selected>none</option>
-            <option value="new">--create new tag--</option>
-        </select>
-        <input type="hidden" id="newListTag" placeholder="New List tag">
-        <input type="text" id="sharedUser" placeholder="Share this list with...">
-        <span onclick="newTodoList()" class="addTodoList">Add</span>
+        <div class="create-todo-form">
+            <h2>Create a new todo list</h2>
+            <div class="form-group">
+                <label for="create-todo-form"><b>List Name</b></label>
+                <input type="text" id="todoListInput" placeholder="New Todo List">
+            </div>
+            <div class="form-group">
+                <label for="list-tag"><b>Select a tag</b></label>
+                <select id="listTags" onchange="toggleNewTagInput()">
+		<option value="Planning">Planning</option>
+                    <option value="Refreshing">Refreshing</option>
+                    <option value="Learning">Learning</option>
+                    <option value="Welllness">Wellness</option>
+                    <option value="Collaborative">Collaborative</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Self-Care">Self-Care</option>	
+                    {% for tag in list_tags %}
+                    <option>{{ tag.tag_name }}</option>
+                    {% endfor %}
+                    <option selected>none</option>
+                    <option value="new">--create new tag--</option>
+                </select>
+                <input type="hidden" id="newListTag" placeholder="New List tag">
+            </div>
+            <div class="form-group">
+                <label for="sharedUser"><b>Share with</b></label>
+                <input type="text" id="sharedUser" placeholder="Share this list with...">
+            </div>
+            <span onclick="newTodoList()" class="addBtn">Add</span>
+        </div>
+    </div>
+    <div class="main"></div>
+        {% if latest_lists %}
+            <div class="lists-container">
+                {% for list in latest_lists %}
+                    <div class="list-card" id="List_{{ list.id }}">
+                        <div class="list-header">
+                            <h3>{{ list.title_text }}</h3>
+                            <!-- Add list controls (delete, template, etc.) -->
+                        </div>
+                        
+                        <!-- List items -->
+                        <ul class="list-items">
+                            {% for list_item in latest_list_items %}
+                                {% if list_item.list_id == list.id %}
+                                    <li class="list-item {% if list_item.is_done %}checked{% endif %}" id="Item_{{ list_item.id }}">
+                                        <input type="checkbox" onclick="toggleDone({{ list_item.id }})" {% if list_item.is_done %}checked{% endif %}>
+                                        <span class="item-name" style="color: {{ list_item.color }}">{{ list_item.item_name }}</span>
+                                        <span class="due-date">Due: {{ list_item.due_date }}</span>
+                                        <button class="clone" onclick="cloneListItem({{ list_item.id }})">Clone</button>
+                                        <button class="close" onclick="removeListItem({{ list_item.id }})">×</button>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        
+                        <!-- List actions -->
+                        <div class="list-actions">
+                            <button onclick="saveAsTemplate({{ list.id }})" class="save-template-btn">Save As Template</button>
+                            <button onclick="deleteList({{ list.id }})" class="delete-btn">Delete List</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h2>You don't have any todo lists!</h2>
+                <p>Create your first todo list or use a template to get started.</p>
+            </div>
+        {% endif %}
     </div>
 
     <div id="calendar">
-        <!-- Calendar content -->
-      </div>
+        <div class="calendar-header">
+            <h2 class="calendar-title">November 2024</h2>
+            <div class="calendar-controls">
+                <button class="today-btn">today</button>
+                <button class="nav-btn">←</button>
+                <button class="nav-btn">→</button>
+            </div>
+        </div>
+        <div class="calendar-grid">
+            <!-- Calendar days will be populated here -->
+        </div>
+    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -612,80 +1136,7 @@
 
     <div class="main">
 
-        {% for list in shared_list %}
-        <div class="header">
-            <h2>
-                <a href="/todo/{{ list.id }}">{{ list.title_text }} {% if list.list_tag != "none" %}
-                    <button type="button" class="tag-template">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag-fill" viewBox="0 0 16 16">
-                            <path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                          </svg>
-                        {{ list.list_tag }}
-                    </button>
-                    {% endif %}
-                    <img src="https://cdn0.iconfinder.com/data/icons/multimedia-261/32/Send-512.png" title="This To-Do list is shared by {{ list.user_id }}" height="16px" width="16px">
-                </a>
-
-            </h2>
-            <!-- <input type="text" id="{{ "InputText_"|addstr:list.id }}" placeholder="New Task">
-            <span onclick="newElement({{ list.id }})" class="addBtn">Add</span> -->
-            <form>
-                <div class="form-group">
-                  <label for="{{ "InputText_"|addstr:list.id }}">New Task</label>
-                  <input type="text" class="form-control" id="{{ "InputText_"|addstr:list.id }}">
-                </div>
-                <div class="form-group">
-                  <label for="{{ "InputDue_"|addstr:list.id }}">Due Date</label>
-                  <input type="date" class="form-control" id="{{ "InputDue_"|addstr:list.id }}">
-                </div>
-		        <div class="form-group">
-                    <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
-                    <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
-                </div>
-            </form>
-            <div>
-                <span onclick="newElement({{ list.id }})" class="addBtn">Add</span>
-            </div>
-        </div>
-        <ul id="{{ "List_"|addstr:list.id }}" class="listItemsUnorderedList">
-            {% for list_item in latest_list_items %}
-                {% if list_item.list_id == list.id %}
-                    {% if not list_item.is_done %}
-                        <li style="background-color:{{list_item.tag_color}};" class="listItem">
-                    {% else %}
-                        <li style="background-color:{{list_item.tag_color}};" class="listItem done">
-                    {% endif %}
-                    {% if not list_item.is_done %}
-                            <input type="checkbox" id="{{ "ListItem_"|addstr:list_item.id }}" name="{{ "ListItem_"|addstr:list_item.id }}" value="{{ "ListItem_"|addstr:list_item.id }}">
-                    {% else %}
-                            <input type="checkbox" id="{{ "ListItem_"|addstr:list_item.id }}" name="{{ "ListItem_"|addstr:list_item.id }}" value="{{ "ListItem_"|addstr:list_item.id }}" checked>
-                    {% endif %}
-                            <label for="{{ "ListItem_"|addstr:list_item.id }}">{{ list_item.item_name }}</label>
-                            <br>
-                            <label for="{{ "ListItem_"|addstr:list_item.id }}" class = "text-right">Start date: {{ list_item.created_on }}</label>
-                            <label for="{{ "ListItem_"|addstr:list_item.id }}" style="color:{{list_item.color}};">Due date: {{ list_item.due_date }}</label>
-                            {% if list_item.is_done == 1%}
-                                <p> It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</p>
-                            {% endif %}
-                            <span class="close">x</span>
-                        </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    <div class="button-container">
-    <form action="/templates/new-from-todo" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="todo" id="todo-{{ list.id }}" value="{{ list.id }}">
-        <button class="add-template-button" onclick="">Save As Template</button>
-    </form>
-    <form action="/delete-todo" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="todo" id="delete-todo-{{ list.id }}" value="{{ list.id }}">
-        <button class="add-template-button delete" onclick="">Delete</button>
-    </form>
-    </div>
-
-    {% endfor %}
+        
 
 
     {% for list in latest_lists %}
@@ -701,28 +1152,28 @@
                             {{ list.list_tag }}
                         </button>
                     {% endif %}
-                    {% if list.is_shared == True %}
-                        <img src="https://cdn0.iconfinder.com/data/icons/multimedia-261/32/Send-512.png" title="This To-Do list is shared by you." height="16px" width="16px">
-                    {% endif %}
                 </a>
             </h2>
         </div>
         
         <form>
             <div class="form-group">
-                <label for="{{ "InputText_"|addstr:list.id }}">New Task</label>
-                <input type="text" class="form-control" id="{{ "InputText_"|addstr:list.id }}">
+                <label for="InputText_{{ list.id }}">New Task</label>
+                <input type="text" class="form-control" id="InputText_{{ list.id }}">
             </div>
             <div class="form-group">
-                <label for="{{ "InputDue_"|addstr:list.id }}">Due Date</label>
-                <input type="date" class="form-control" id="{{ "InputDue_"|addstr:list.id }}">
+                <label for="InputDue_{{ list.id }}">Due Date</label>
+                <input type="date" class="form-control" id="InputDue_{{ list.id }}">
             </div>
             <div class="form-group">
-                <label for="{{ "InputColor_"|addstr:list.id }}">Color Tag</label>
-                <input type="color" class="form-control" id="{{ "InputColor_"|addstr:list.id }}" value="#f9f9f9">
+                <label for="InputColor_{{ list.id }}">Color Tag:</label>
+                <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                    <input type="color" id="InputColor_{{ list.id }}" name="InputColor_{{ list.id }}" value="#FFFFFF" style="width: 30px; height: 30px; padding: 0;">
+                    <div style="width: 30px; height: 30px; border: 1px solid #ccc; background-color: {{ list_item.tag_color }}"></div>
+                </div>
             </div>
             <div>
-                <button type="button" onclick="newElement({{ list.id }})" class="addBtn">Add</button> <!-- Add Button -->
+                <button type="button" onclick="newElement({{ list.id }})" class="addBtn">Add</button>
             </div>
         </form>
         
@@ -732,19 +1183,19 @@
                     <li style="background-color:{{list_item.tag_color}};" class="listItem {% if list_item.is_done %}done{% endif %}">
                         <input type="checkbox" id="{{ "ListItem_"|addstr:list_item.id }}" name="{{ "ListItem_"|addstr:list_item.id }}" value="{{ "ListItem_"|addstr:list_item.id }}" {% if list_item.is_done %}checked{% endif %}>
                         <label for="{{ "ListItem_"|addstr:list_item.id }}">{{ list_item.item_name }}</label>
-                        <span class="close">x</span>
                         <br>
                         <label class="text-right">Start date: {{ list_item.created_on }}</label>
-                        <label style="color:{{list_item.color}};">Due: {{list_item.due_date}}</label>
-                        {% if list_item.is_done == 1 %}
-                            <p> It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</p>
+                        <label style="color:{{list_item.color}};">Due: {{ list_item.due_date }}</label>
+                        {% if list_item.is_done and list_item.finished_on %}
+                            <span class="completion-time">It took you: {{ list_item.finished_on|timeuntil:list_item.created_on }} to complete</span>
                         {% endif %}
+                        <span class="clone"><i class="fi fi-rs-clone"></i></span>
+                        <span class="close">x</span>
                     </li>
                 {% endif %}
             {% endfor %}
         </ul>
 
-        <!-- Button Container for Save/Delete buttons -->
         <div class="button-container">
             <form action="/templates/new-from-todo" method="post">
                 {% csrf_token %}
@@ -761,8 +1212,9 @@
         {% endfor %}
         {% if not latest_lists %}
             {% if not shared_list %}
-        <div class="header">
-            <h2 id="noListYet">You don't hava any todo list!</h2>
+        <div class="empty-state">
+            <h2>You don't have any todo list!</h2>
+            <p>Create your first todo list to get started.</p>
         </div>
             {% endif %}
         {% endif %}
@@ -792,6 +1244,123 @@ function removeListItem() {
     }
     httpRequest.send(JSON.stringify(params))
 }
+
+// Click on a clone button to clone the current list item
+var clone = document.getElementsByClassName("clone");
+var i;
+for (i = 0; i < clone.length; i++) {
+  clone[i].onclick = cloneListItem
+}
+
+function convertToISODate(dateString) {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+}
+
+function cloneListItem() {
+
+    var listItem = this.parentElement;
+    var listId = this.parentElement.parentElement.id.toString().substring(5)
+    var listItemId = listItem.getElementsByTagName("input")[0].id.toString().substring(9);
+    var itemName = listItem.querySelector('label').textContent;
+    var dueDate = listItem.querySelector('label[style^="color"]').textContent.split(': ')[1];
+    var newDueDate = convertToISODate(dueDate);
+    var color = listItem.style.backgroundColor;
+    const [r, g, b] = color.slice(4, -1).split(',').map(Number);
+    
+    // Convert to hex and pad with zeros if necessary
+    newColor =  "#" + [r, g, b].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }).join('');
+
+    // Create popup container
+    var popupContainer = document.createElement('div');
+    popupContainer.className = 'popup-container';
+    popupContainer.style.display = 'block';
+
+    // Popup content
+    popupContainer.innerHTML = `
+        <span class="popup-close-btn">&times;</span>
+        <h3>Clone Task</h3>
+        <form id="cloneForm">
+            <div class="form-group">
+                <label for="cloneItemName">Task Name:</label>
+                <input type="text" id="cloneItemName" value="${itemName}">
+            </div>
+            <div class="form-group">
+                <label for="cloneDueDate">Due Date:</label>
+                <input type="date" id="cloneDueDate" value="${newDueDate}">
+            </div>
+            <div class="form-group">
+                <label for="cloneColor">Color Tag:</label>
+                <input type="color" id="cloneColor" value="${newColor}">
+            </div>
+            <button type="submit" class="addBtn">Clone Task</button>
+        </form>
+    `;
+    // Insert popup after the list item
+    listItem.insertAdjacentElement('afterend', popupContainer);
+
+    // Close button functionality
+    popupContainer.querySelector('.popup-close-btn').onclick = function() {
+        popupContainer.remove();
+    };
+
+    // Form submission
+    popupContainer.querySelector('#cloneForm').onsubmit = function(e) {
+        e.preventDefault();
+        
+        var newItemName = document.getElementById('cloneItemName').value;
+        
+        // Fix date format
+        var dueDate = new Date(document.getElementById('cloneDueDate').value);
+        var formattedDate = dueDate.toISOString().split('T')[0]; // Converts to yyyy-MM-dd
+        
+        // Fix color format - ensure it's hexadecimal
+        var color = document.getElementById('cloneColor').value;
+        if (color.startsWith('rgb')) {
+            // Convert RGB to Hex if needed
+            color = '#' + color.match(/\d+/g)
+                .map(x => parseInt(x).toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.open('POST', '/addNewListItem'); // Changed to match your existing endpoint
+        httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8");
+        
+        var params = {
+            "list_id": listId,
+            "list_item_name": newItemName,
+            "due_date": formattedDate,
+            "tag_color": color,
+            "create_on": new Date().getTime() / 1000
+        };
+
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                location.reload();
+            }
+        };
+
+        httpRequest.send(JSON.stringify(params));
+        popupContainer.remove();
+    };
+}
+
+
+
+//     // send post request to clone the actual list item
+//     var list_item_id = this.parentElement.getElementsByTagName("input")[0].id.toString().substring(9)
+//     var httpRequest = new XMLHttpRequest()
+//     httpRequest.open('POST', '/cloneListItem');
+//     httpRequest.setRequestHeader('Content-Type', "application/json;charset=UTF-8")
+//     var params = {
+//         "list_item_id": list_item_id
+//     }
+//     httpRequest.send(JSON.stringify(params))
+// }
 
 var list = document.getElementsByClassName("listItemsUnorderedList");
 
@@ -909,54 +1478,130 @@ var listItemsCheckBoxes = document.querySelectorAll("input[type=checkbox]");
     });
 
 
-// mark item as done or undo it
 function markListItemByName() {
     if (this.parentElement.tagName === 'LI') {
-        // Toggle the "done" class for the list item
-        this.parentElement.classList.toggle('done');
-        
-        // Extract necessary information
+        var checkbox = this;
         var item_name = this.nextElementSibling.innerHTML;
-        var list_id = this.parentElement.parentElement.id.toString().substring(5); // Extract list ID
-        var list_item_id = this.id.toString().substring(9); // Extract list item ID
-        var is_done = this.parentElement.classList.contains('done'); // Check if the item is marked as done
+        var list_id = this.parentElement.parentElement.id.toString().substring(5);
+        var list_item_id = this.id.toString().substring(9);
+        var is_done = this.checked;
         var today = new Date();
-        var finish_on_timestamp = today.getTime() / 1000; // Get the current timestamp
-        
-        // Create a new XMLHttpRequest object
-        var httpRequest = new XMLHttpRequest();
-        
-        // Set up the POST request to update the item
-        httpRequest.open('POST', '/markListItem', true);
-        httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        
-        // Prepare the parameters to be sent in the request body
-        var params = {
-            "list_id": list_id,
-            "list_item_name": item_name,
-            "is_done": is_done,
-            "list_item_id": list_item_id,
-            "finish_on": finish_on_timestamp
-        };
-        
-        // Send the request with the parameters as JSON
-        httpRequest.send(JSON.stringify(params));
-        
-        // Handle the response
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    // Success: Optionally show a success message or handle UI updates
-                    console.log('Item marked as done/undone successfully');
-                } else {
-                    // Error: Handle error case
-                    console.error('Failed to mark the item. Please try again.');
+        var finish_on_timestamp = is_done ? today.getTime() / 1000 : 0;
+
+        // Disable the checkbox while processing
+        checkbox.disabled = true;
+
+        if (is_done) {
+            showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp);
+        } else {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.open('POST', '/markListItem', true);
+            httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+            var params = {
+                "list_id": list_id,
+                "list_item_name": item_name,
+                "is_done": false,
+                "list_item_id": list_item_id,
+                "finish_on": 0,
+                "rating": 0  // Set a default rating of 0 for unchecked items
+            };
+
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState === 4) {
+                    checkbox.disabled = false;
+                    if (httpRequest.status === 200) {
+                        var listItem = checkbox.parentElement;
+                        listItem.classList.remove('done');
+                        var completionTime = listItem.querySelector('.completion-time');
+                        if (completionTime) {
+                            completionTime.remove();
+                        }
+                    } else {
+                        // If update failed, revert checkbox state
+                        checkbox.checked = true;
+                        console.error('Failed to update task status');
+                    }
                 }
-            }
-        };
+            };
+
+            httpRequest.send(JSON.stringify(params));
+        }
     }
 }
 
+function showRatingPopup(list_item_id, item_name, list_id, finish_on_timestamp) {
+    var popupContainer = document.createElement('div');
+    popupContainer.className = 'rating popup-container';
+    popupContainer.style.display = 'block';
+    popupContainer.style.marginTop = '25px'
+
+    popupContainer.innerHTML = `
+        <span class="popup-close-btn">&times;</span>
+        <h3>Rate Task: ${item_name}</h3>
+        <div class="emoji-rating">
+            <button class="emoji-btn" data-rating="3">😃</button>
+            <button class="emoji-btn" data-rating="2">😐</button>
+            <button class="emoji-btn" data-rating="1">😞</button>
+        </div>
+    `;
+
+    document.body.appendChild(popupContainer);
+
+    popupContainer.querySelector('.popup-close-btn').onclick = function() {
+        popupContainer.remove();
+    };
+
+    var emojiButtons = popupContainer.querySelectorAll('.emoji-btn');
+    emojiButtons.forEach(function(button) {
+        button.onclick = function() {
+            var rating = this.getAttribute('data-rating');
+            updateTaskStatus(list_id, item_name, list_item_id, true, finish_on_timestamp, rating);
+            popupContainer.remove();
+        };
+    });
+}
+
+function updateTaskStatus(list_id, item_name, list_item_id, is_done, finish_on_timestamp, rating = null) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', '/markListItem', true);
+    httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+    var params = {
+        "list_id": list_id,
+        "list_item_name": item_name,
+        "is_done": is_done,
+        "list_item_id": list_item_id,
+        "finish_on": finish_on_timestamp,
+        "rating": rating
+    };
+
+    httpRequest.send(JSON.stringify(params));
+
+    httpRequest.onreadystatechange = function() {
+        if (httpRequest.readyState === 4) {
+            if (httpRequest.status === 200) {
+                console.log('Item updated successfully');
+                // Reload only when rating is submitted
+                if (rating !== null) {
+                    window.location.reload();
+                } else if (is_done) {
+                    document.getElementById(`ListItem_${list_item_id}`).parentElement.classList.add('done');
+                } else {
+                    var listItem = document.getElementById(`ListItem_${list_item_id}`).parentElement;
+                    listItem.classList.remove('done');
+                    // Remove the completion time span if it exists
+                    var completionTime = listItem.querySelector('.completion-time');
+                    if (completionTime) {
+                        completionTime.remove();
+                    }
+                }
+            } else {
+                console.error('Failed to update the item. Please try again.');
+            }
+        }
+    };
+}
 
 // Use Array.forEach to add an event listener to each checkbox.
 listItemsCheckBoxes.forEach(function(checkbox) {
@@ -974,29 +1619,26 @@ function newElement(list_id, saved_to_database = true) {
     var inputDue = document.getElementById("InputDue_" + list_id.toString()).value;
     var inputColor = document.getElementById("InputColor_" + list_id.toString()).value;
 
-
-    li.className = "listItem";
     if (inputValue === '') {
         alert("You must write something!");
     } else if (inputDue === '') {
         alert("You must enter due date!");
     } else {
+        // Clear input fields
         inputBox.value = "";
         
-        // Saved to database if saved_to_database is true
+        // Save to database if saved_to_database is true
         if (saved_to_database && inputValue !== '') {
             var httpRequest = new XMLHttpRequest();
             var today = new Date();
             var create_on_timestamp = today.getTime() / 1000;
-            console.log("Timestamp for creation:", create_on_timestamp);
 
             httpRequest.onreadystatechange = function() {
                 if (this.readyState === 4) {
-                    console.log("HTTP Request completed with status:", this.status);
                     if (this.status === 200) {
-                        console.log("Response received:", this.responseText);
-
                         var jsonResponse = JSON.parse(this.responseText);
+                        
+                        // Create checkbox
                         var itemCheckBox = document.createElement("input");
                         itemCheckBox.type = "checkbox";
                         var itemValue = "ListItem_" + jsonResponse['item_id'];
@@ -1005,20 +1647,22 @@ function newElement(list_id, saved_to_database = true) {
                         itemCheckBox.value = itemValue;
                         itemCheckBox.addEventListener('change', markListItemByName);
 
+                        // Create label
                         var itemLabel = document.createElement("label");
                         itemLabel.htmlFor = itemValue;
                         itemLabel.innerHTML = inputValue;
                         li.append(itemCheckBox);
                         li.append(itemLabel);
 
+                        // Create close button
                         var span = document.createElement("SPAN");
                         var txt = document.createTextNode("\u00D7");
                         span.className = "close";
                         span.onclick = removeListItem;
                         span.appendChild(txt);
                         li.appendChild(span);
-                    } else {
-                        console.error("Error in HTTP Request. Status:", this.status);
+
+                        window.location.reload();
                     }
                 }
             };
@@ -1036,7 +1680,6 @@ function newElement(list_id, saved_to_database = true) {
 
             httpRequest.send(JSON.stringify(params));
         }
-        window.location.reload();
     }
 }
 
@@ -1053,9 +1696,9 @@ function newTodoList() {
         listTag = document.getElementById("newListTag").value;
         create_new_tag = true;
     }
-    var listTag = selectedTag==='new'? document.getElementById("newListTag").value : selectedTag;
+    // var listTag = selectedTag==='new'? document.getElementById("newListTag").value : selectedTag;
     var inputValue = leftSideBar.value
-    console.log(inputValue)
+    // console.log(inputValue)
     if (inputValue === '') {
         alert("You must write something!")
     }
@@ -1086,15 +1729,17 @@ function newTodoList() {
 
         // httpRequest.responseType = 'text';
 
-        if (httpRequest.readyState === httpRequest.DONE){
-            if (httpRequest.status == 200) {
-                console.log("The request has been made");
+        httpRequest.onreadystatechange = function() {
+            if (this.readyState === 4) {  // Request is complete
+                if (this.status === 200) {
+                    window.location.reload();
+                }
             }
-        }
+        };
 
         httpRequest.send(JSON.stringify(params))
 
-        window.location.reload();
+        // window.location.reload();
     }
 }
 
@@ -1105,6 +1750,29 @@ function toggleNewTagInput() {
     }else{
         document.getElementById("newListTag").type='hidden';
     }
+}
+
+// Add this function to handle template application
+function applyTemplate(templateId) {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('POST', '/todo/new-from-template');
+    httpRequest.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    
+    httpRequest.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                // Force a page reload after template is applied
+                window.location.href = '/todo';
+            }
+        }
+    };
+
+    var params = {
+        "template": templateId,
+        "csrfmiddlewaretoken": document.querySelector('[name=csrfmiddlewaretoken]').value
+    };
+
+    httpRequest.send(JSON.stringify(params));
 }
 </script>
 </html>
