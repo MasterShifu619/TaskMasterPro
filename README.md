@@ -23,7 +23,7 @@ TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application de
 
 ### Watch below video to know more about TaskMasterPro
 
-[<img src="img/todone-create-list.gif" width="1200" height="500" />](https://www.youtube.com/watch?v=T-Qt4Oh1I98)
+https://www.youtube.com/watch?v=T-Qt4Oh1I98)
 
 ## Contents
 
