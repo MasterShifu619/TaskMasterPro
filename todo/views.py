@@ -684,6 +684,8 @@ def user_analytics(request):
     return render(request, 'todo/user_analytics.html', context)
 
 def focus(request, list_id=0):
+    if request == '':
+        return	
     if request.user.is_authenticated:
         user_id = request.user.id
         list_tags = List.objects.filter(user_id=user_id).values('title_text', 'list_tag')

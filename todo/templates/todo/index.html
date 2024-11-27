@@ -1031,6 +1031,13 @@
             <div class="form-group">
                 <label for="list-tag"><b>Select a tag</b></label>
                 <select id="listTags" onchange="toggleNewTagInput()">
+		<option value="Planning">Planning</option>
+                    <option value="Refreshing">Refreshing</option>
+                    <option value="Learning">Learning</option>
+                    <option value="Welllness">Wellness</option>
+                    <option value="Collaborative">Collaborative</option>
+                    <option value="Fitness">Fitness</option>
+                    <option value="Self-Care">Self-Care</option>	
                     {% for tag in list_tags %}
                     <option>{{ tag.tag_name }}</option>
                     {% endfor %}
