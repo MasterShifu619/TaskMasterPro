@@ -66,15 +66,18 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
 ## New Features
 * *Task Cloning for Repeatable Routines*: Add a "Clone Task" option for quick duplication of recurring tasks with similar settings.
 * *Quick Task Ratings*: Prompt users to rate tasks on importance, ease, and satisfaction after completion for personalized insights.
-* *AI-Driven Next Task Suggestion*: Recommend the next best task based on urgency, priority, and user preferences.
+* *Next Task Suggestion*: Recommend the next best task based on urgency, priority, and user preferences.
 * *Daily Focus Theme*: Set daily themes (e.g., "Wellness Wednesdays") to help users concentrate on specific task types.
-* *Gamified Achievements and Badges*: Reward users with badges like "Task Streaker" and "Deadline Conqueror" for motivational milestones.
+* *Additional Template functionality*: Built on the existing functionality and added a delete template option.
+* *UI Redesign*: Redesigned some UI elements of the register page to make things look nicer.
 
 
 ## Upcoming Features
 
-Add new features here
-
+* *Recurring Tasks*: Add functionality for users to set up recurring tasks and reminders for regular activities.
+* *Collaboration Tools*: Enhance collaboration features with real-time editing, comments, and file sharing, allowing teams to work together more effectively on shared tasks.
+* *Enhancing Task Suggestions*: Incorporate additional inputs, such as estimated completion time and task complexity, to improve the accuracy of the next task suggestions.
+  
 ## Quick Start
 
  * [Download](https://www.python.org/downloads/release/python-380/) and install Python 3.8.0 or higher.
