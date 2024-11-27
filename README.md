@@ -111,8 +111,16 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
 ### Manage Todo List
 <p float="middle">
     <img src="img/Lists2.0.0.png" width="500" height="250" />
-    <br>
-    
+</p>
+
+### Cloning
+<p float="middle">
+    <img src="img/Cloning2.0.0.gif" width="500" height="250" />
+</p>
+
+### Rating
+<p float="middle">
+    <img src="img/Rating2.0.0.gif" width="500" height="250" />
 </p>
 
 ### Templates
@@ -123,6 +131,11 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
 ### User Analytics
 <p float="middle">
     <img src="img/UserAnalytics2.0.0.gif" width="500" height="250" />
+</p>
+
+### Daily Focus
+<p float="middle">
+    <img src="img/DailyFocus2.0.0.gif.gif" width="500" height="250" />
 </p>
 
 ## Want to Contribute?
