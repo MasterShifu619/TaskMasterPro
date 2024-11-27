@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang=”en”>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>To-Done</title>
-<style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-Done</title>
     <style>
         * {
             margin: 0;
@@ -12,181 +11,222 @@
         }
 
         body {
-            font-family: Calibri, Helvetica, sans-serif;
+            font-family: 'Inter',Calibri, Helvetica, sans-serif;
+            background-color: #f3f4f6; /* Light background for contrast */
         }
 
         ul {
             list-style: none;
             padding-left: 0;
         }
-
+        :root {
+            --primary: #2557a7;      /* Bright Blue */
+            --primary-light: #3b82f6; /* Lighter Blue */
+            --secondary: #10b981;    /* Emerald Green */
+            --accent: #8b5cf6;       /* Purple */
+            --warning: #f59e0b;      /* Amber */
+            --error: #ef4444;        /* Red */
+            --surface: #ffffff;
+            --background: #f3f4f6;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --text-light: #ffffff;
+            --border: rgba(0, 0, 0, 0.1);
+        }
         /* Topbar styles */
-.topbar {
-    background-color: #1458a0;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 100;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);  /* Deeper blue to bright blue */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-/* Styling for links in the topbar */
-.topbar a {
-    color: white;
-    text-decoration: none;
-    font-size: 22px;
-    margin-right: 20px;
-    transition: color 0.3s ease;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
+        /* Styling for links in the topbar */
+        .topbar a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+            font-size: 1.5rem;
+        }
 
-/* Links hover effect */
-.topbar a:hover {
-    color: #ccc;
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Flexbox for horizontal alignment */
-.topbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-}
-
-/* Style for each list item */
-.topbar ul li {
-    margin: 0 15px;
-}
-
-/* Responsiveness: adjust padding and font size for smaller screens */
-@media (max-width: 768px) {
-    .topbar {
-        padding: 10px 15px;
-    }
-    
-    .topbar a {
-        font-size: 18px;
-        margin-right: 10px;
-    }
-    
-    .topbar ul li {
-        margin: 0 10px;
-    }
-}
-
-/* Further responsiveness for very small devices */
-@media (max-width: 480px) {
-    .topbar a {
-        font-size: 16px;
-        margin-right: 8px;
-    }
-    
-    .topbar ul li {
-        margin: 0 8px;
-    }
-}
-
-    h1 {
-        color: #0fa662;
-        text-align: center;
-    }
-
-    button {
-        background-color: #0fa662;
-        width: 100%;
-        color: white;
-        padding: 15px;
-        margin: 10px 0px;
-        border: none;
-        cursor: pointer;
-        border-radius: 10px;
-    }
-
-    input[type=text], input[type=password], input[type=email] {
-        width: 100%;
-        margin: 8px 0;
-        padding: 12px 20px;
-        display: inline-block;
-        border: 0px;
-        border-radius: 10px;
-        box-sizing: border-box;
-        box-shadow: 1px 1px 5px #555 inset;
-    }
-
-    button:hover {
-        opacity: 0.7;
-    }
-
-    .container {
-        margin: auto;
-        width: 400px;
-    }
-
-    .right {
-        float: right;
-    }
-
-    .main {
-            font-size: 20px;
-            padding: 0px 20px;
+        /* Links hover effect */
+        .topbar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .main {
+            font-size: 16px;
+            padding: 20px;
             margin-top: 70px;
-    }
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align the content */
+        }
 
-    .main button {
-        display: inline-block;
-        cursor: pointer;
-        border-radius: 10px;
-        background: #0fa662;
-        border: 0;
-        font-size: 16px;
-        height: 37px;
-        padding: 0 11px;
-        margin-top: 5px;
-        text-align: center;
-        width: 100%;
-        min-width: 200px;
-        font-weight: 500;
-        color: #f9f9f9;
-    }
+        .container {
+            background: white; /* White background for the form */
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px; /* Limit the width */
+            margin: 20px auto; /* Center the container */
+        }
 
-    .main button:hover {
-        background: #0b8f54;
-    }
-</style>
+        h1 {
+            color: #0fa662;
+            text-align: center;
+            margin-bottom: 1.5rem; /* Space below the title */
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.875rem; /* Increase font size for readability */
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 0.25rem; /* Add space below label */
+        }
+
+        .form-group input {
+            font-size: 0.875rem; /* Set font size for input text */
+            font-family: 'Inter', Calibri, Helvetica, sans-serif;
+            width: 100%; /* Full width within the container */
+            padding: 12px 16px; /* Adjust padding for better spacing */
+            margin-bottom: 1rem; /* Space below input fields */
+            border: 1px solid #ddd; /* Light border for clarity */
+            border-radius: 8px; /* Smooth rounded corners */
+            box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow inside */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none; /* Remove default outline */
+            border-color: var(--secondary); /* Green border on focus */
+            box-shadow: 0 0 4px rgba(16, 185, 129, 0.5); /* Soft green glow */
+        }
+        
+        .help-block{
+            font-size: 0.75rem;
+            color: red;
+            margin-top: 0.25rem;
+            line-height: 1.2;
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .controls{
+            font-size: 0.75rem;
+            color: red;
+            margin-top: 0.25rem;
+            line-height: 1.2;
+            text-align: left;
+            margin-bottom: 0.5rem;  
+        }
+
+        button {
+            background-color: #0fa662;
+            width: 100%;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0b8f54; /* Darker green on hover */
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444; /* Error color */
+            font-size: 0.875rem;
+            text-align: center; /* Center align error messages */
+        }
+
+        .links-container {
+            margin-top: 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .auth-link {
+            color: #0fa662;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .auth-link:hover {
+            color: #0b8f54;
+            text-decoration: underline;
+        }
+
+        /* New styles for password instructions */
+        .password-instructions {
+            font-size: 0.75rem; /* Smaller font size */
+            color: red; /* Red color for emphasis */
+            margin-top: 0.5rem; /* Space above the instructions */
+            text-align: left; /* Align text to the left */
+        }
+    </style>
 </head>
 <body>
-	<div class="topbar">
+    <div class="topbar">
         <ul><li><a href="/">To-Done</a></li></ul>
     </div>
 
-	<div class="main">
+    <div class="main">
+        {% for message in messages %}
+            <div style="text-align: center;" class='alert alert-{{message.tags}}'>{{ message }}</div>
+        {% endfor %}
+        {% block content %}
 
-		{% for message in messages %}
-        		<div style="text-align: center;" class='alert alert-{{message.tags}}'>{{ message }}</div>
-    		{% endfor %}
-		{% block content %}
+        {% load crispy_forms_tags %}
 
-		{% load crispy_forms_tags %}
+        <!--Register-->
+        <div class="container">
+            <h1>Register</h1>
+            <form method="POST" class="form-group input">
+                {% csrf_token %}
+                {{ register_form|crispy }}
+                <!-- <div class="password-instructions">
+                    Your password can’t be too similar to your other personal information.<br>
+                    Your password must contain at least 8 characters.<br>
+                    Your password can’t be a commonly used password.<br>
+                    Your password can’t be entirely numeric.
+                </div> -->
+                <button class="btn btn-primary" type="submit">Register</button>
+            </form>
+            <p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
+        </div>
 
-		<!--Register-->
-		<div class="container py-5">
-			<h1>Register</h1>
-			<form method="POST">
-				{% csrf_token %}
-				{{ register_form|crispy }}
-				<button class="btn btn-primary" type="submit">Register</button>
-			</form>
-			<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
-		</div>
-
-		{% endblock %}
-	</div>
+        {% endblock %}
+    </div>
 </body>
 </html>
