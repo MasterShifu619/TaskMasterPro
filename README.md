@@ -133,6 +133,11 @@ TaskMasterPro stands out as a functional, efficient to-do app that integrates es
     <img src="img/UserAnalytics2.0.0.gif" width="500" height="250" />
 </p>
 
+### Daily Focus
+<p float="middle">
+    <img src="img/DailyFocus2.0.0.gif.gif" width="500" height="250" />
+</p>
+
 ## Want to Contribute?
 
 Interested in contributing? See our [Contributing Guide](CONTRIBUTING.md) for ways to get started.
