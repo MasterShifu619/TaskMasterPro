@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="img/todone-logo.png" />
-</p>
-
 # The Only Todo List You Need
 
 [![Build Status](https://github.com/MasterShifu619/TaskMasterPro/actions/workflows/django.yml/badge.svg)](https://github.com/MasterShifu619/TaskMasterPro/actions/workflows/django.yml)
@@ -13,7 +9,7 @@
 [![GitHub Release](https://img.shields.io/badge/release-v2.0.0-blue)](https://github.com/MasterShifu619/TaskMasterPro/releases/tag/v2.0)
 [![Lint Python](https://github.com/MasterShifu619/TaskMasterPro/actions/workflows/pylint.yml/badge.svg)](https://github.com/MasterShifu619/TaskMasterPro/actions/workflows/pylint.yml)
 
-## TaskMaster
+## TaskMasterPro
 
 TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application designed for busy professionals, students, and anyone looking to stay organized. With a sleek web interface, you can manage your tasks from any device. Access a comprehensive library of templates to get started quickly or customize your list to fit specific needs. With innovative features like shared lists, intelligent task analysis, and real-time alerts, you’ll never miss a deadline again!
 
