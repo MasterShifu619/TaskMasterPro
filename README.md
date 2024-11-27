@@ -19,7 +19,7 @@ TaskMasterPro is a powerful, easy-to-use, and flexible to-do list application de
 
 ### Watch this video to know more about TaskMasterPro 2.0
 
-ADD LINK TO VIDEO HERE
+<img src="img/TaskMasterPro_AnimatedCompressed.gif" width="1200" height="500" />
 
 ### Watch below video to know more about the original TaskMasterPro
 
@@ -97,25 +97,29 @@ Add new features here
 
 ### Register
 <p float="middle">
-    <img src="img/register.png" width="500" height="250" />
+    <img src="img/Register2.0.0.png" width="500" height="250" />
 </p>
 
 ### Login, Forget Password
 <p float="middle">
-    <img src="img/login.png" width="500" height="250" /> 
+    <img src="img/Login2.0.0.png" width="500" height="250" /> 
 </p>
 
 ### Manage Todo List
 <p float="middle">
-    <img src="img/main.png" width="500" height="250" />
+    <img src="img/Lists2.0.0.png" width="500" height="250" />
     <br>
     
 </p>
 
+### Templates
+<p float="middle">
+    <img src="img/Templates2.0.0.png" width="500" height="250" />
+</p>
 
 ### User Analytics
 <p float="middle">
-    <img src="img/analytics.gif" width="500" height="250" />
+    <img src="img/UserAnalytics2.0.0.gif" width="500" height="250" />
 </p>
 
 ## Want to Contribute?
