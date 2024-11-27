@@ -162,3 +162,7 @@ This project is licensed under the MIT License. For more details, view the [LICE
 * Bipin Gowda (bvgowda@ncsu.edu)
 * Isha Dave (idave2@ncsu.edu)
 * Ashlesha Joshi (ajoshi28@ncsu.edu)
+
+## :email: Support
+
+For any queries and help, please reach out to us at: bipin.919@gmail.com
